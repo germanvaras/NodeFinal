@@ -1,0 +1,273 @@
+paths:
+  /api/cart/quantity/{cid}:
+    get:
+      summary: Obtiene la cantidad en el carrito
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      responses:
+        "200":
+          description: Cantidad obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/CartQuantity"
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno del servidor
+
+  /api/cart/:
+    post:
+      summary: Crea un carrito
+      tags:
+        - Cart
+      responses:
+        "201":
+          description: Carrito creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/EmptyCart"
+        "500":
+          description: Error interno del servidor
+
+  /api/cart/{cid}:
+    get:
+      summary: Obtiene los productos en el carrito
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      responses:
+        "200":
+          description: Productos obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Cart"
+        "404":
+          description: No existe el cart con el id e47869135db72f1976d172c
+        "500":
+          description: Error de servidor
+    delete:
+      summary: Elimina todos los productos del carrito
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      responses:
+        "200":
+          description: Los productos del carrito con id  e47869135db72f1976d172c han sido eliminados correctamente
+        "404": 
+          description: No existe el cart con el id e47869135db72f1976d172c
+        "500": 
+          description: Id inválido.
+
+  /api/cart/{cid}/product/{pid}:
+    post:
+      summary: Agrega un producto al carrito
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto a agregar
+      responses:
+        "201":
+          description: Producto agregado all carrito
+        "404":
+          description: Carrito o producto no encontrado
+        "500":
+          description: Error de servidor
+    put:
+      summary: Actualiza la cantidad de un producto en el carrito
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+                  description: Nueva cantidad del producto
+      responses:
+        "200":
+          description: Cantidad de producto actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CartQuantity"
+        "404":
+          description: Carrito o producto no encontrado
+        "500":
+          description: Error de servidor
+    
+    delete:
+      summary: Elimina un producto del carrito
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del producto a eliminar
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CartQuantity"
+        "404":
+          description: Carrito o producto no encontrado
+        "500":
+          description: Error de servidor
+
+  /api/cart/{cid}/purchase:
+    get:
+      summary: Realiza la compra de los productos en el carrito
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+          description: ID del carrito
+      responses:
+        "200":
+          description: Compra realizada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la compra
+                  payload:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        description: Código de la compra
+                      amount:
+                        type: number
+                        description: Monto de la compra
+                      purchaser:
+                        type: string
+                        description: Comprador
+                      _id:
+                        type: string
+                        description: ID de la compra
+        "404":
+          description: Carrito no encontrado
+        "409":
+          description: No hay suficiente stock de Remera Ojos para completar la compra, el mismo cuenta con 0 de stock
+        "500":
+          description: Error de servidor
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del carrito
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: ID del producto
+              quantity:
+                type: number
+                description: Cantidad del producto en el carrito
+    CartQuantity:
+      type: object
+      properties:
+        product:
+          type: string
+          description: ID del producto
+        quantity:
+          type: number
+          description: Cantidad en el carrito
+    EmptyCart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del carrito
+        products:
+          type: array
+          items:
+            type: object

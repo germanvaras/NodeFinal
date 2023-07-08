@@ -1,0 +1,188 @@
+paths: 
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos
+      tags: 
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron obtenido correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto a partir de su id
+      tags: 
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se desea solicitar.
+        schema:
+          $type: String
+      responses: 
+        "200":
+          description: "Producto Encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "500":
+          description: Error interno del servidor
+  /api/products/form:
+    post:
+      summary: Crea un nuevo producto
+      tags: 
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/NewOrUpdateRequestBody"
+      responses:
+        "201":
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "500":
+          description: Error interno del servidor
+  /api/products/form/{pid}:
+    delete:
+      summary: Elimina un producto a partir de su id
+      tags: 
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se desea solicitar.
+        schema:
+          $type: String
+      responses: 
+        "200":
+          description: "Producto Eliminado"
+        "500":
+          description: Error interno del servidor
+  put:
+      summary: Modifica un producto a partir de su id
+      tags: 
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del usuario que se desea solicitar.
+        schema:
+          $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/NewOrUpdateRequestBody"
+      responses:
+        "201":
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "500":
+          description: Error interno del servidor  
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado por mongoose
+        title: 
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción del producto
+        code:
+          type: String 
+          description: Código del Producto
+        price: 
+          type: Number
+          description: Precio del Producto
+        status:
+          type: Boolean
+          description: Estado del producto(con o sin stock)
+        stock: 
+          type: Number 
+          desciption: Stock del producto
+        category:
+          type: String 
+          description: Categoria del producto
+        thumbnail:
+          type: String 
+          description: Url de la imagen del producto
+        owner: 
+          type: string 
+          description: Creador del producto, por defecto es admin.
+      example:
+        _id: Object("63fd1917e187ee54ba617cbe")
+        title: "Remera Rocket"
+        description: Remera de algodon peinado
+        code: ASASAD
+        price: 5000
+        status: true
+        stock: 5
+        category: Super
+        thumbnail: https://res.cloudinary.com/dveku4pvl/image/upload/v1660416669/remera-r…
+        owner: "user@gmail.com"
+  requestBodies:
+    NewOrUpdateRequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        code:
+          type: string
+          description: Código del Producto
+        price:
+          type: number
+          description: Precio del Producto
+        status:
+          type: boolean
+          description: Estado del producto (con o sin stock)
+        stock:
+          type: number
+          description: Stock del producto
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnail:
+          type: string
+          description: URL de la imagen del producto
+        owner: 
+          type: string 
+          description: Creador del producto, por defecto es admin.
+      example:
+        title: "Remera Rocket"
+        description: "Remera de algodón peinado"
+        code: "ASASAD"
+        price: 5000
+        status: true
+        stock: 5
+        category: "Super"
+        thumbnail: "https://res.cloudinary.com/dveku4pvl/image/upload/v1660416669/remera-r…"
+        owner: "user@gmail.com"

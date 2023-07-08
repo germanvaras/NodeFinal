@@ -1,0 +1,71 @@
+<div class="productsContainer">
+    <h1>Cart</h1>
+    {{#if productsInCart}}
+    <div class="productsInCart">
+        <table>
+            {{#each productsInCart}}
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        <p>Producto</p>
+                    </th>
+                    <th>
+                        <p>Cantidad</p>
+                    </th>
+                    <th>
+                        <p>Precio</p>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="product{{this._id}}">
+                    <td>
+                        <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.product.title}}">
+                    </td>
+                    <td>
+                        <p>{{this.title}}</p>
+                    </td>
+                    <td>
+                        <div class="containerQuantity">
+                            <button onclick="minusQuantity('{{this._id}}')" class="cardButton">
+                                -
+                            </button>
+                            <p class="quantity">{{this.quantity}}</p>
+                            <button onclick="plusQuantity('{{this._id}}')" class="cardButton">
+                                +
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <p>${{this.price}}</p>
+                    </td>
+                    <td><button class="cardButton "
+                            onclick="deleteProductInCart('{{this._id}}')">Eliminar</button></td>
+                </tr>
+            </tbody>
+            {{/each}}
+        </table>
+        <div class="buttonCartContainer">
+            <button class="buttonBlack" onclick="purchaseProducts()">Finalizar Compra</button>
+        </div>
+        <div class="buttonCartContainer">
+            <button class="buttonFilters removeFilters" onclick="deleteProductsInCart()">Vaciar Carrito</button>
+        </div>
+        <div class="buttonCartContainer">
+            <button class="buttonFilters" onclick="backHome()">Volver a Home</a></button>
+        </div>
+    </div>
+    {{else}}
+    <div class="emptyCartContainer">
+        <h3 class="emptyTitle">No hay productos en el carrito :(</h3>
+        <div class="buttonCartContainer">
+            <button class="buttonBlack" onclick="backHome()">Volver a Home</a></button>
+        </div>
+    </div>
+
+    {{/if}}
+</div>
+<script src="/js/cart.js"></script>
+<script src="/js/purchase.js"></script>

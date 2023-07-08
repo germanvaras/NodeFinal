@@ -1,0 +1,13 @@
+<div id="loginRegister">
+    <form class="formContainer" id="formRegister">
+        <h2 class="formTitle">Registrate</h2>
+        <input type="text" placeholder="Nombre" name="nombre" class="formInput" id="userName" required />
+        <input type="text"placeholder="Apellido" name="apellido" class="formInput" id="userLastname" required />
+        <input type="text" placeholder="Username" name="username" class="formInput" id="username" required />
+        <input type="email" placeholder="Email" name="userEmail" class="formInput" id="userEmail" required />
+        <input type="text" placeholder="Contraseña" name="userPassword" class="formInput" id="userPassword" required maxlength="20" />
+        <button class="buttonForm" type="submit">Registrarte</button>
+        <p>Ya tienes una cuenta? <a class="linkForm" href="/api/user/login">Ingresá</a></p>
+    </form>
+</div>
+<script src="/js/register.js"></script>

@@ -1,0 +1,70 @@
+<div class="homeContainer">
+    <div class="filterContainer">
+        {{#if user}}
+        <h3>Bienvenido: {{user.username}}</h3>
+        {{else}}
+        {{/if}}
+        <section id="sectionRolButton">
+            <button class="buttonBlack" id="{{user.rol}}">
+        </button>
+        </section>
+        <div class="orderPrice">
+            <h3>Ordenar por precio</h3>
+                <button class="buttonFilters" onclick="sortAsc('{{sort}}')">
+                    Ascendente
+                </button>
+                <button class="buttonFilters" onclick="sortDes('{{sort}}')">
+                    Descendente
+                </button>
+        </div>
+        <div class="orderQuery">
+            {{#if query}}
+            {{else}}
+            <h3>Separar por categoria</h3>
+            {{#each categories}}
+            <button class="buttonFilters" onclick="addQuery('{{this}}')">{{this}}</button>
+            {{/each }}
+            {{/if}}
+        </div>
+        <button class="buttonFilters removeFilters" onclick="removeFilters()">Remover Filtros</button>
+
+    </div>
+    <div class="productsContainer">
+        {{#if query}}
+        <h1>Productos {{query}}</h1>
+        {{else}}
+        <h1>Todos los Productos</h1>
+        {{/if}}
+        <div class="products" id="products">
+            {{#each products.docs}}
+            <div class="cardContainer">
+                <div class="cardInformation">
+                    <img class="cardImg" src={{this.thumbnail}} alt={{this.title}}>
+                    <h3 class="cardTitle">{{this.title}}</h3>
+                    <p class="cardDescription">{{this.description}}</p>
+                    <p class="cardPrice">Precio: ${{this.price}}</p>
+                    <a href="/api/products/{{this._id}}" class=""><button class="cardButton">Detalle</button></a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="paginationContainer">
+            {{#if hasPrevPage}}
+            <button class="buttonBlack" onclick="prevPage('{{page}}')">Página Anterior
+            </button>
+            {{else}}
+            <button class="buttonDisabled">Página Anterior</button>
+            {{/if}}
+            <h3>{{page}}</h3>
+            {{#if hasNextPage}}
+            <button class="buttonBlack" onclick="nextPage('{{page}}')">
+                Página Siguiente
+            </button>
+            {{else}}
+            <button class="buttonDisabled">Página Siguiente</button>
+            {{/if}}
+        </div>
+    </div>
+</div>
+<script src="/js/index.js"></script>
+<script src="/js/filters.js"></script>
