@@ -290,7 +290,7 @@ button.swal2-cancel.swal2-styled:hover {
     align-content: center;
 }
 
-.sectionProductsAdmin {
+.sectionProductsAdmin, .sectionUsersAdmin {
     display: flex;
     flex-direction: column;
     align-items: center;

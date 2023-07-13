@@ -4,7 +4,14 @@ class TokenRepository {
     constructor() {
         this.tokenDao = new TokenDao();
     }
-
+    async findAllTokens() {
+        try {
+            const tokens = await this.tokenDao.findAllTokens();
+            return tokens
+        } catch (error) {
+            return { error: error.message };
+        }
+    }
     async findTokenByUserId(userId) {
         try {
             return await this.tokenDao.findTokenByUserId(userId);

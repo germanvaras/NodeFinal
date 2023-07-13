@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/{{style}}">
 </head>
-
 <body>
     {{#if user}}
     <nav class="nav">
@@ -19,12 +17,26 @@
                 <a class="linkForm" onclick="backHome()">
                     <li>Home</li>
                 </a>
+                {{#if (eq user.rol 'admin')}}
+                <a class="linkForm" href="/api/user/getAll">
+                    <li>Control de Usuarios</li>
+                </a>
+                <a class="linkForm" href="/api/products/form">
+                    <li>Control de Productos</li>
+                </a>
+                {{else}}
+                {{#if (eq user.rol 'premium')}}
+                <a class="linkForm" href="/api/products/form">
+                    <li>Control de Productos</li>
+                </a>
+                {{/if}}
                 <a class="linkForm" onclick="changeRol('{{user._id}}')">
                     <li>Cambiar Rol</li>
                 </a>
-                <a class="linkForm"  href="/api/user/documents">
+                <a class="linkForm" href="/api/user/documents">
                     <li>Documentación</li>
                 </a>
+                {{/if}}
             </div>
             <div class="listCartLogout">
                 <li>
@@ -46,12 +58,12 @@
     </nav>
     <button class="floating-button" onclick="goChat()">Chat</button>
     {{{body}}}
-    <script src="/js/main.js"></script>
+    <script src="/js/getCartLinkQuantity.js"></script>
     <script src="/js/utils.js"></script>
-    {{else}}
+{{else}}
     {{{body}}}
     <script src="/js/utils.js"></script>
-    {{/if}}
+{{/if}}
 </body>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

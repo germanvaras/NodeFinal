@@ -1,8 +1,7 @@
 const { Router } = require('express');
 const productsRouter = Router();
-const isAdmin = require('../middlewares/isAdmin')
+const isAdminOrPremium = require('../middlewares/isAdminOrPremium')
 const isLogged = require('../middlewares/isLogged')
-const isPremium = require('../middlewares/isPremium');
 const {
     addProduct,
     getProducts,
@@ -11,15 +10,10 @@ const {
     deleteById,
     formCreate
 } = require('../controllers/product.js');
-
-
 productsRouter.get('/', isLogged, getProducts)
-productsRouter.get('/form', isAdmin, formCreate)
-productsRouter.post('/form', isAdmin, addProduct)
-productsRouter.delete('/form/:pid',isAdmin,deleteById)
-productsRouter.put('/form/:pid',isAdmin, updateProductById)
+productsRouter.get('/form', isAdminOrPremium, formCreate)
+productsRouter.post('/form', isAdminOrPremium, addProduct)
+productsRouter.delete('/form/:pid',isAdminOrPremium,deleteById)
+productsRouter.put('/form/:pid',isAdminOrPremium, updateProductById)
 productsRouter.get('/:pid',isLogged,getProductById)
-
-
-
 module.exports = productsRouter

@@ -2,7 +2,7 @@ const { Router } = require('express');
 const messageRouter = Router();
 const { addMessages, getAllMessages} =  require('../controllers/message')
 const isLogged = require('../middlewares/isLogged')
-const isUser = require('../middlewares/isUser')
+const isUserOrPremium = require('../middlewares/isUserOrPremium')
 messageRouter.get("/",isLogged, getAllMessages)
-messageRouter.post("/",isLogged,isUser, addMessages)  
+messageRouter.post("/",isLogged,isUserOrPremium, addMessages)  
 module.exports = messageRouter;

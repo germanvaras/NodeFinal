@@ -22,5 +22,5 @@ tokenSchema.pre("save", function (next) {
     tokenReset.token = createHash(this.token);
     next();
 });
-const TokenReset = mongoose.model('tokenReset', tokenSchema);
+const TokenReset = mongoose.model('tokensReset', tokenSchema);
 module.exports = TokenReset;

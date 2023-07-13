@@ -1,94 +1,103 @@
-const handlerValidationErrors = (err, res) => {
-    const bodyError = JSON.parse(err.message);
-    return res.status(400).send({ code: 400, ...bodyError });
-};
-const handlerDuplicateDocumentsError = (err, res) => {
-    res.status(400).send({
-        status: "error",
-        payload: err.message,
-        code: 400,
-    });
-};
-const handlerInvalidDocumentNameError = (err, res) => {
-    res.status(400).send({
-        status: "error",
-        payload: err.message,
-        code: 400
-    });
-};
-const handlerCredentialError = (err, res) => {
-    res.status(403).send({
-        status: "error",
-        payload: err.message,
-        code: 403
-    });
-};
-const handlerNotFoundError = (err, res) => {
-    res.status(404).send({
-        status: "error",
-        payload: err.message,
-        code: 404
-    });
-};
-const handlerMissingDocuments = (err, res) => {
-    res.status(400).send({
-        status: "error",
-        payload: err.message,
-        code: 400,
-    });
-};
-
-const handlerEmptyFieldsError = (err, res) => {
-    res.status(422).send({
-        status: "error",
-        payload: JSON.parse(err.message),
-        code: 422
-    });
-};
-const handlerUnauthorized = (err, res) => {
-    console.log('Entró al error Unauthorized');
-    res.status(401).send({
-        status: "error",
-        payload: err.message,
-        code: 401
-    });
-};
-const errorHandler = (err, req, res, next) => {
-    try {
-        if (err.message == "Contraseña Incorrecta") {
-            req.logger.error(err);
-            return handlerCredentialError(err, res);
-        }
-        if (err.message == "Usuario Inexistente") {
-            req.logger.error(err);
-            return handlerNotFoundError(err, res);
-        }
-        if (err.message.includes("requerido")) {
-            req.logger.error(err);
-            return handlerEmptyFieldsError(err, res);
-        }
-        if (err.message == "No posee la autorización para realizar esta acción") {
-            req.logger.error(err);
-            return handlerUnauthorized(err, res);
-        }
-        if (err.message.includes("Documentos existentes") || err.message.includes("Documento existente")) {
-            req.logger.error(err);
-            return handlerDuplicateDocumentsError(err, res);
-        }
-        if (err.message.includes("Nombres de documentos no válidos") || err.message.includes("Nombre de documento no válido")) {
-            req.logger.error(err);
-            return handlerInvalidDocumentNameError(err, res);
-        }
-        if (err.message.startsWith("Falta")) {
-            req.logger.error(err);
-            return handlerMissingDocuments(err, res);
-        }
-
-        return handlerValidationErrors(err, res);
-    } catch (error) {
-        req.logger.fatal(error.message);
-        res.status(500).send({ status: "error", payload: "Error Interno del Servidor", code: 500 });
+class ValidationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'ValidationError';
+        this.statusCode = 422;
     }
+}
+class NotFoundError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'NotFoundError';
+        this.statusCode = 404;
+    }
+}
+class UnauthorizedError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'UnauthorizedError';
+        this.statusCode = 401;
+    }
+}
+class DuplicatedDocumentError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'DuplicatedDocumentError';
+        this.statusCode = 400;
+    }
+}
+class InvalidDocumentNameError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'InvalidDocumentNameError';
+        this.statusCode = 400;
+    }
+}
+class MissingDocumentError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'MissingDocumentError';
+        this.statusCode = 400;
+    }
+}
+class BadOwnerError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'BadOwnerError';
+        this.statusCode = 400;
+    }
+}
+class InvalidAdminRoleError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'InvalidAdminRoleError';
+        this.statusCode = 401;
+    }
+}
+class InvalidStockPriceError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'InvalidStockPriceError';
+        this.statusCode = 400;
+    }
+}
+class CredentialError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'CredentialError';
+        this.statusCode = 403;
+    }
+}
+const errorHandlers = [
+    { check: (err) => err instanceof ValidationError, statusCode: 422 },
+    { check: (err) => err instanceof NotFoundError, statusCode: 404 },
+    { check: (err) => err instanceof UnauthorizedError, statusCode: 401 },
+    { check: (err) => err instanceof DuplicatedDocumentError, statusCode: 400 },
+    { check: (err) => err instanceof InvalidDocumentNameError, statusCode: 400 },
+    { check: (err) => err instanceof MissingDocumentError, statusCode: 400 },
+    { check: (err) => err instanceof BadOwnerError, statusCode: 400 },
+    { check: (err) => err instanceof InvalidAdminRoleError, statusCode: 401 },
+    { check: (err) => err instanceof InvalidStockPriceError, statusCode: 400 },
+    { check: (err) => err instanceof CredentialError, statusCode: 403 },
+];
+const errorHandler = (err, req, res, next) => {
+    for (const { check, statusCode } of errorHandlers) {
+        if (check(err)) {
+            req.logger.error(err);
+            return res.status(statusCode).send({
+                status: "error",
+                payload: err.message,
+                code: statusCode
+            });
+        }
+    }
+    req.logger.error(err);
+    return res.status(500).send({
+        status: "error",
+        payload: "Error Interno del Servidor",
+        code: 500
+    });
 };
-
-module.exports = errorHandler;
+module.exports = {errorHandler, ValidationError, NotFoundError,UnauthorizedError, DuplicatedDocumentError, 
+    InvalidDocumentNameError, MissingDocumentError, BadOwnerError,
+    InvalidAdminRoleError,InvalidStockPriceError,CredentialError };

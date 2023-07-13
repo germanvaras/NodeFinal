@@ -43,15 +43,6 @@ class ProductDao {
     async addProduct(product) {
         try {
             const newProduct = new Product(product)
-            const validationError = newProduct.validateSync()
-            if (validationError) {
-                const errorMessages = []
-                for (let errorField in validationError.errors) {
-                    const errorMessage = validationError.errors[errorField].message
-                    errorMessages.push(errorMessage)
-                }
-                return { error: errorMessages }
-            }
             const createdProduct = await newProduct.save()
             return createProductDtoFromObject(createdProduct)
 
@@ -89,6 +80,15 @@ class ProductDao {
             if (err.name === 'CastError') {
                 return { error: `Id inválido: ${id}` }
             }
+            return { error: err.message }
+        }
+    }
+    async findProductByCode(productCode){
+        try {
+            const product = await Product.findOne({ code: productCode }).lean()
+            return createProductDtoFromObject(product)
+        }
+        catch (err) {
             return { error: err.message }
         }
     }

@@ -4,9 +4,6 @@
         <h3>Bienvenido: {{user.username}}</h3>
         {{else}}
         {{/if}}
-        <section id="sectionRolButton">
-            <button class="buttonBlack" id="{{user.rol}}">
-        </button>
         </section>
         <div class="orderPrice">
             <h3>Ordenar por precio</h3>
@@ -27,7 +24,6 @@
             {{/if}}
         </div>
         <button class="buttonFilters removeFilters" onclick="removeFilters()">Remover Filtros</button>
-
     </div>
     <div class="productsContainer">
         {{#if query}}
@@ -66,5 +62,4 @@
         </div>
     </div>
 </div>
-<script src="/js/index.js"></script>
 <script src="/js/filters.js"></script>

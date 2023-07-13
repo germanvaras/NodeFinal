@@ -1,3 +1,4 @@
+const { ValidationError } = require("../middlewares/errorHandler");
 const { getUserByEmail } = require("../services/user");
 
 const getAllMessages = async (req, res) => {
@@ -8,17 +9,17 @@ const getAllMessages = async (req, res) => {
         user
     });
 };
-const addMessages = async (req, res) => {
-    try{     
+const addMessages = async (req, res, next) => {
+    try {
         await require("../socket").addMessages(req.body);
-        if(req.body.message === ""){
-            res.status(400).send({status:"error", payload:"Ingrese un mensaje"})
+        if (req.body.message === "") {
+            throw new ValidationError("Ingrese un mensaje")
         }
-        else{
-            res.status(201).send({ status: "success", payload: "Message Added"});
+        else {
+            res.status(201).send({ status: "success", payload: "Message Added" });
         }
-    }catch(error){
-        res.status(500).send({ status: "error", payload: error.message });
+    } catch (error) {
+        next(error)
     }
 };
 module.exports = {

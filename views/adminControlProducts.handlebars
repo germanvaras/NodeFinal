@@ -1,13 +1,17 @@
 <section id="realTimeContainer">
     <form class="formContainer" id="formProduct">
-        <a onclick="backHome()" class="linkForm">Volver al Home</a>
         <h2 class="formTitle">Agregar Producto</h2>
+        {{#if (eq user.rol 'admin')}}
+        <p class="cardDescription">El campo owner no es necesario completarlo</p>
+        {{else}}
+        <p class="cardDescription">El campo owner debe ser completado con tu email, caso contrario será propiedad del administrador.</p>
+        {{/if}}
         <input type="text" placeholder="Título" name="title" class="formInput" id="title" />
         <input type="text" placeholder="Descripción" name="description" class="formInput" id="description"
             maxlength="80" />
+        <input type="text" placeholder="Categoría" name="Category" class="formInput" id="category" maxlength="20" />
         <input type="text" placeholder="Código" name="code" class="formInput" id="code" maxlength="8" />
-        <input type="text" placeholder="Categoria" name="Category" class="formInput" id="category" maxlength="20" />
-        <input type="text" placeholder="Url imagem" name="img" class="formInput" id="img" />
+        <input type="text" placeholder="Url imagen" name="img" class="formInput" id="img" />
         <input type="number" placeholder="Precio" name="price" class="formInput" id="price" />
         <input type="number" placeholder="Stock" name="stock" class="formInput" id="stock" />
         <input type="email" placeholder="Owner" name="owner" class="formInput" id="owner" />
@@ -58,5 +62,5 @@
     </div>
     </div>
 </section>
-<script src="/js/admin.js"></script>
+<script src="/js/adminProducts.js"></script>
 <script src="/js/filters.js"></script>

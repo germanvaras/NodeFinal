@@ -9,18 +9,17 @@ const cookieParser = require("cookie-parser");
 const initPassport = require("./config/passport");
 const passport = require("passport");
 const { getMockProducts } = require("../src/utils/mockingProducts")
-const errorHandler = require("../src/middlewares/errorHandler")
+const {errorHandler} = require("../src/middlewares/errorHandler")
 const { addLogger } = require("../src/middlewares/logger")
 const swaggerJSDoc = require("swagger-jsdoc")
 const swaggerUiExpress = require("swagger-ui-express")
 const swaggerOption = require("../src/config/swagger")
+const {scheduleDeleteInactiveUsers, scheduleDeleteExpiredTokens} = require('./config/cronTasks')
 
 const specs = swaggerJSDoc(swaggerOption)
 const MONGO_URL = process.env.db
 const secret = process.env.secret
 const routes = require("./routes/index");
-
-
 app.use(
   session({
     store: MongoStore.create({
@@ -32,9 +31,17 @@ app.use(
     saveUninitialized: false,
   })
 );
-
 app.use(cookieParser("sublimeTienda"));
-app.engine('handlebars', handlebars.engine())
+
+const hbs = handlebars.create({
+  helpers: {
+    eq: function (a, b) {
+      return a === b;
+    },
+  },
+  defaultLayout: 'main', 
+});
+app.engine('handlebars', hbs.engine)
 app.set('views', path.join(__dirname, "/../views"))
 app.set('view engine', 'handlebars');
 
@@ -50,9 +57,11 @@ app.use("", routes);
 app.get("/", (req, res) => {
   res.redirect("api/products");
 })
-
 app.get("/mockingproducts", (req, res) => {
   res.send({ status: "success", payload: getMockProducts() });
 });
-app.use(errorHandler);  
+app.use(errorHandler);
+
+scheduleDeleteInactiveUsers();
+scheduleDeleteExpiredTokens(); 
 module.exports = app;

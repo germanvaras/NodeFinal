@@ -1,0 +1,45 @@
+<section class="sectionUsersAdmin">
+    <h2>Lista de Usuarios</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    <p>Usuario</p>
+                </th>
+                <th>
+                    <p>
+                        Email
+                    </p>
+                </th>
+                <th>
+                    <p>Rol</p>
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        {{#each users}}
+        <tbody>
+            <tr class="user{{this._id}}">
+                <td>
+                    <p>{{this.username}}</p>
+                </td>
+                <td>
+                    <p>{{this.email}}</p>
+                </td>
+                <td>
+                    <p>{{this.rol}}</p>
+                </td>
+                <td><button class="cardButton " onclick="deleteUser('{{this._id}}')">Eliminar</button>
+                </td>
+                <td><button class="cardButton " onclick="changeRolUser('{{this._id}}')">Cambiar Rol
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+        {{/each}}
+    </table>
+</section>
+<script src="/js/adminUsersControl.js"></script>

@@ -1,6 +1,10 @@
 const UserDAO = require('../daos/user.dao')
 const userDAO = new UserDAO()
 class UserRepository {
+    getAllUsers = async () =>{
+        const users = await userDAO.getAllUsers()
+        return users
+    }
     createUser = async (user, cartId) => {
         const newUser = await userDAO.createUser(user, cartId);
         return newUser;

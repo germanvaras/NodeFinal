@@ -5,5 +5,5 @@ const ticketSchema = mongoose.Schema({
     amount:{type: Number},
     purchaser:{type: String},
 })
-const Ticket = mongoose.model('ticket', ticketSchema);
+const Ticket = mongoose.model('tickets', ticketSchema);
 module.exports = Ticket

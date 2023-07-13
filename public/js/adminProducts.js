@@ -13,8 +13,8 @@ const submitForm = async () => {
     const price = document.getElementById("price").value;
     const stock = document.getElementById("stock").value;
     const img = document.getElementById("img").value;
-    const owner = document.getElementById("owner").value || "admin";
-    
+    const owner = document.getElementById("owner").value;
+
     await fetch(`${window.location.href}`, {
         method: "post",
         mode: "cors",
@@ -35,19 +35,26 @@ const submitForm = async () => {
     }).then((response) => response.json())
         .then((data) => {
             if (data.status === "error") {
+                let errorMessage;
+                if (Array.isArray(data.payload)) {
+                    console.log("hola")
+                    errorMessage = `<ul> ${data.payload.map((field) => {
+                        return `<li>${field}</li>`;
+                    }).join('')} </ul>`;
+                } else {
+                    errorMessage = data.payload;
+                }
                 Swal.fire({
                     position: 'top-end',
                     icon: data.status,
-                    html: `<ul> ${data.payload.map((field) => {
-                        return `<li>${field}</li>`;
-                    }).join('')} </ul>`,
+                    html: errorMessage,
                     showConfirmButton: false,
                     iconColor: 'var(--main-color)',
                     background: 'var(--black)',
                     timer: 2000,
                 });
-            }
-            else {
+            } else {
+                console.log("hola")
                 alerts(data.status, data.payload)
                 setTimeout(() => {
                     window.location.reload()

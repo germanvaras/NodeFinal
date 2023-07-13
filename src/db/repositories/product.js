@@ -16,6 +16,9 @@ class ProductRepository {
     async addProduct(product) {
         return productDao.addProduct(product);
     }
+    async getProductByCode(code){
+        return productDao.findProductByCode(code);
+    }
 }
 
 module.exports = ProductRepository;

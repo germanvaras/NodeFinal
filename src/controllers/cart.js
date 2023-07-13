@@ -1,3 +1,4 @@
+const { UnauthorizedError } = require('../middlewares/errorHandler');
 const {
     serviceAddCart,
     serviceGetProductsInCart,
@@ -43,10 +44,9 @@ const addProductInCart = async (req, res, next) => {
                 res.send({status:"success", payload:`Producto agregado al carrito`, addProduct})
         }
         else{
-            throw new Error("No posee la autorización para realizar esta acción");
+            throw new UnauthorizedError("No posee la autorización para realizar esta acción");
         }
     }catch(error){
-        console.log(error)
         next(error)
     }  
 }

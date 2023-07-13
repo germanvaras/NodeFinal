@@ -1,4 +1,5 @@
 const {
+    getAllUserService,
     createUserService,
     loginUserService,
     updatePasswordService,
@@ -26,10 +27,20 @@ const {
 } = require("../utils/generateToken");
 const { sendEmailResetPassword } = require("../config/nodemailer");
 const path = require('path');
+const { NotFoundError, CredentialError } = require("../middlewares/errorHandler");
 
 const loginUserForm = (req, res) => {
     res.render("login", { title: "Login", style: "index.css" });
 };
+const getAllUsers = async (req, res, next) => {
+    try {
+        const user = await getUserById(req.session?.user?._id);
+        const users = await getAllUserService(req.session.user)
+        res.render("adminControlUsers", { status: "success", users: users, style: "index.css", user: user })
+    } catch (error) {
+        next(error)
+    }
+}
 const loginUser = async (req, res, next) => {
     try {
         const user = await existUserService(req.body)
@@ -38,9 +49,8 @@ const loginUser = async (req, res, next) => {
             req.session.user = user;
             res.send({ status: "success", payload: "Login success", cartId: user.cartId, data: user });
         } else {
-            throw new Error("Contraseña Incorrecta");
+            throw new CredentialError("Contraseña Incorrecta");
         }
-
     } catch (error) {
         next(error)
     }
@@ -63,11 +73,6 @@ const forgotPassword = async (req, res, next) => {
             await updateTokenService(tokenReset);
         }
         sendEmailResetPassword(token, user, resetUrl)
-        const currentTime = new Date();
-        const timeDifference = expirationDate - currentTime;
-        setTimeout(() => {
-            deleteTokenByIdService(tokenReset._id)
-        }, timeDifference);
         res.status(201).send({ status: "success", payload: `El token de recuperacion ha sido enviado al email: ${user.email}` })
     } catch (error) {
         next(error)
@@ -112,7 +117,7 @@ const createUser = async (req, res) => {
         let existEmailOrUser = await loginUserService(req.body)
         if (!existEmailOrUser) {
             const newUser = await createUserService(req.body);
-            req.logger.info(req.body)
+            req.logger.info(newUser.username)
             res.status(201).send({ status: "success", payload: "Usuario creado correctamente", data: newUser });
         }
         else if (existEmailOrUser.username === req.body.username) {
@@ -125,7 +130,6 @@ const createUser = async (req, res) => {
         res.status(500).send({ status: "error", payload: error.message });
     }
 };
-
 const uploadDocuments = async (req, res, next) => {
     try {
         const { uid } = req.params;
@@ -148,8 +152,8 @@ const uploadDocuments = async (req, res, next) => {
         next(error);
     }
 };
-const renderUploadForm = (req, res) => {
-    const user = req.session.user;
+const renderUploadForm = async (req, res) => {
+    const user = await getUserById(req.session?.user?._id);
     res.render('upload', { user, style: "index.css" });
 };
 const updateRolUser = async (req, res, next) => {
@@ -164,7 +168,6 @@ const updateRolUser = async (req, res, next) => {
         next(error);
     }
 };
-
 const logoutUser = (req, res, next) => {
     try {
         let userId = req.session.user._id;
@@ -183,9 +186,8 @@ const deleteUser = async (req, res, next) => {
     try {
         const user = await getUserById(req.params.uid)
         const deleteUser = await deleteUserService(req.params.uid)
-
         if (deleteUser.error) {
-            throw new Error("Usuario Inexistente")
+            throw new NotFoundError("Usuario Inexistente")
         }
         else {
             res.send({ status: "success", payload: `${user.username} ha sido eliminado`, data: deleteUser })
@@ -208,5 +210,6 @@ module.exports = {
     updateRolUser,
     deleteUser,
     uploadDocuments,
-    renderUploadForm
+    renderUploadForm,
+    getAllUsers
 };

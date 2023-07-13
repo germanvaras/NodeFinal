@@ -5,6 +5,14 @@ function convertToDTO(tokenReset) {
     return new TokenDTO(_id, token, userId, expiresAt);
 }
 class TokenDao {
+    async findAllTokens() {
+        try {
+            const tokens = await TokenReset.find();
+            return tokens.map(convertToDTO);
+        } catch (error) {
+            return { error: error.message };
+        }
+    }
     async findTokenByUserId(userId) {
         try {
             const tokenReset = await TokenReset.findOne({userId});

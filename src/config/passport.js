@@ -35,7 +35,6 @@ const initPassport = () => {
                             password: "",
                         };
                         let userAdded = await createUserService(newUser);
-                        console.log("userAdded", userAdded);
                         done(null, userAdded);
                     } else {
                         done(null, user);
