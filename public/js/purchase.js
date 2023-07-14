@@ -1,7 +1,21 @@
-const purchaseProducts = () => {
+let stripe;
+let elements;
+document.addEventListener('DOMContentLoaded', (event) => {
+    fetch('/stripe-key')
+        .then((result) => result.json())
+        .then((data) => {
+            console.log(data);
+            stripe = Stripe(data.publishableKey);
+            elements = stripe.elements();
+            card = elements.create('card');
+            card.mount('#card-element');
+        });
+});
+
+const purchaseProducts = (cartId) => {
     Swal.fire({
-        title:"Te gustaría continuar con tu compra?",
-        text: "Recordá que no contamos con todos los productos en stock, aquellos que no cuenten con la cantidad a comprar pemaneceran en el carrito",
+        title: "¿Te gustaría continuar con tu compra?",
+        text: "Recuerda que no contamos con todos los productos en stock. Aquellos que no tengan la cantidad para comprar permanecerán en el carrito.",
         showCancelButton: true,
         showConfirmButton: true,
         confirmButtonText: "Continuar",
@@ -10,30 +24,65 @@ const purchaseProducts = () => {
         background: 'var(--black)',
     }).then(async (result) => {
         if (result.isConfirmed) {
-            fetch(window.location.href + "/purchase", { method: "GET" })
+            fetch(`${window.location.protocol}//${window.location.host}/api/cart/${cartId}/purchase`, { method: "POST" })
                 .then((res) => res.json())
                 .then((res) => {
                     if (res.status === "success") {
-                        Swal.fire({
-                            html: `<p>${res.payload.purchaser} tu total de tu compra es: $${res.payload.amount}</p> <p>Codigo de compra:${res.payload.code}</p> `,
-                            icon: res.status,
-                            showConfirmButton: true,
-                            confirmButtonText: "Continuar",
-                            background: 'var(--black)',
-                        }).then(async (result) => {
-                            if(result.isConfirmed){
-                                window.location.reload()
+                        stripe.confirmCardPayment(res.payload.client_secret, {
+                            payment_method: {
+                                card: card,
+                                billing_details: {
+                                    name: res.payload.purchaser,
+                                }
+                            },
+                        }).then((result) => {
+                            if (result.error) {
+                                Swal.fire({
+                                    html: `<p>${result.error.message}</p>`,
+                                    icon: "error",
+                                    background: 'var(--black)',
+                                });
+                            } else {
+                                if (result.paymentIntent.status === 'succeeded') {
+                                    confirmPurchase(cartId);
+                                }
                             }
-                        })
-                    }
-                    else{
+                        });
+                    } else {
                         Swal.fire({
                             html: `<p>${res.payload}</p> `,
                             icon: res.status,
                             background: 'var(--black)',
-                        })    
+                        });
                     }
                 });
         }
     });
 };
+const confirmPurchase = (cartId) => {
+    fetch(`${window.location.protocol}//${window.location.host}/api/cart/${cartId}/confirm-purchase`, { method: "POST" })
+        .then((res) => res.json())
+        .then((res) => {
+            console.log(res)
+            if (res.status === "success") {
+                Swal.fire({
+                    html: `<p>${res.payload.ticket.purchaser}, el total de tu compra es: $${res.payload.ticket.amount}</p> <p>Código de compra: ${res.payload.ticket.code}</p> `,
+                    icon: res.status,
+                    showConfirmButton: true,
+                    confirmButtonText: "Continuar",
+                    background: 'var(--black)',
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    html: `<p>${res.payload}</p> `,
+                    icon: res.status,
+                    background: 'var(--black)',
+                });
+            }
+        });
+}
+

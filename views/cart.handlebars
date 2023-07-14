@@ -48,7 +48,7 @@
             {{/each}}
         </table>
         <div class="buttonCartContainer">
-            <button class="buttonBlack" onclick="purchaseProducts()">Finalizar Compra</button>
+            <button class="buttonBlack" onclick="redirectToCheckout('{{cartId}}')">Finalizar Compra</button>
         </div>
         <div class="buttonCartContainer">
             <button class="buttonFilters removeFilters" onclick="deleteProductsInCart()">Vaciar Carrito</button>
@@ -68,4 +68,3 @@
     {{/if}}
 </div>
 <script src="/js/cart.js"></script>
-<script src="/js/purchase.js"></script>

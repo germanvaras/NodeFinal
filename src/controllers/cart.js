@@ -28,7 +28,7 @@ const createCart = async (req, res) => {
 const getProductsInCart = async (req, res) => {
     const productsInCart = await serviceGetProductsInCart(req.params.cid)
     let user = await getUserByEmail(req.session?.user?.email);
-    res.render("cart", { style: "index.css", title: "Cart", productsInCart, user})
+    res.render("cart", { style: "index.css", title: "Cart", productsInCart, user, cartId: user.cartId})
 }
 const deleteProductsInCart = async (req, res) => {
     const cartEmpty = await serviceDeleteProductsInCart(req.params.cid)

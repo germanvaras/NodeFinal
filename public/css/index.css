@@ -271,7 +271,7 @@ button.swal2-cancel.swal2-styled:hover {
 }
 
 /* realTimeProducts */
-.formContainer {
+.formContainer, .formContainerCheckout {
     display: flex;
     width: 50%;
     background-color: #1c1c1c;
@@ -300,7 +300,7 @@ button.swal2-cancel.swal2-styled:hover {
     background-color: transparent;
     color: var(--white);
     border: 2px solid var(--white);
-    width: 40%;
+    width: 80%;
     padding: 1rem;
     border-radius: .6rem;
     transition: all .3s;
@@ -554,4 +554,26 @@ i.fas.fa-eye {
 
 i.fas.fa-eye-slash {
     color: var(--main-color);
+}
+/* checkout */
+.formContainerCheckout{
+    width: 70%;
+}
+#card-element {
+    height: 40px;
+    padding: 10px 12px;
+    color: var(--white);
+    background-color: var(--black);
+    border: 1px solid var(--main-color);
+    border-radius: 4px;
+    transition: box-shadow 150ms ease;
+}
+
+#card-element:hover {
+    border: 1px solid var(--main-color);
+}
+
+#card-element.StripeElement--focus {
+    box-shadow: 0 1px 3px 0 var(--main-color);
+    transition: box-shadow 150ms ease;
 }

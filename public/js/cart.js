@@ -89,3 +89,6 @@ const setQuantity = async (pid) => {
   })
   await getCart()
 };
+const redirectToCheckout = (cartId) => {
+  window.location.href = `/api/cart/${cartId}/checkout`;
+}
