@@ -64,8 +64,10 @@ const minusQuantity = async (pid) => {
   if (Number(quantity.innerHTML) !== 0) {
     quantity.innerHTML = Number(quantity.innerHTML) - 1;
     await getQuantityInCart() + 1
-
     setQuantity(pid);
+    if (Number(quantity.innerHTML) === 0) {
+      setTimeout(()=> { window.location.reload();}, 500);
+    }
   }
 };
 const plusQuantity = async (pid) => {

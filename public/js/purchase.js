@@ -73,7 +73,7 @@ const confirmPurchase = (cartId) => {
                     background: 'var(--black)',
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        window.location.reload();
+                        window.location.origin + "/api/products"
                     }
                 });
             } else {

@@ -13,7 +13,7 @@ const {
 } = require('../controllers/cart')
 const {
     purchaseProducts,
-    checkout,
+    renderCheckout,
     confirmPurchase
 } = require('../controllers/ticket')
 cartRouter.get('/quantity/:cid', isLogged, getQuantityInCart)
@@ -23,7 +23,7 @@ cartRouter.delete('/:cid', isLogged, isUserOrPremium, deleteProductsInCart)
 cartRouter.post('/:cid/product/:pid', isLogged, isUserOrPremium, addProductInCart)
 cartRouter.delete('/:cid/product/:pid', isLogged, isUserOrPremium, deleteProductInCart)
 cartRouter.put("/:cid/product/:pid", isLogged, isUserOrPremium, updateQuantityProduct);
-cartRouter.get('/:cid/checkout',isUserOrPremium, checkout )
+cartRouter.get('/:cid/checkout',isUserOrPremium, renderCheckout )
 cartRouter.post('/:cid/purchase', isUserOrPremium, purchaseProducts)
 cartRouter.post('/:cid/confirm-purchase', isUserOrPremium, confirmPurchase);
 

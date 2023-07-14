@@ -131,16 +131,12 @@ class CartDao {
             if (!cart) {
                 return { error: `No existe un carrito con id: ${cid}` };
             }
-
             const productIndex = cart.products.findIndex(p => String(p.product) === pid);
-
             if (productIndex < 0) {
                 return { error: `El producto con id: ${pid} no se encontró en el carrito` };
             }
-
             if (quantity === 0) {
                 cart.products.splice(productIndex, 1);
-
             } else {
                 cart.products[productIndex].quantity = quantity;
             }

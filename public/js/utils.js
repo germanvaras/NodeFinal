@@ -16,6 +16,9 @@ const backHome = () => {
 const goChat = () => {
     location.href = `${window.location.protocol}//${window.location.host}/api/chat`
 }
+const goToCart = (cid) => {
+    location.href = `${window.location.protocol}//${window.location.host}/api/cart/${cid}`
+}
 const changeRol = async (id) => {
     const baseUrl = `${window.location.protocol}//${window.location.host}/api/`;
     const endpoint = `user/premium/${id}`
