@@ -1,8 +1,10 @@
-<form id="uploadForm" data-user-id="{{user._id}}" class="formContainer">
-    <h2 class="formTitle">Cambia a usuario Premium</h2>
-    <p>Carga 3 archivos: Identificacion, Estado de cuenta y Comprobante de Domicilio </p>
-    <p class="cardDescription">Los nombres de los archivos deben ser: Identificacion, Estado y Domicilio</p>
-    <input type="file" id="documentInput" name="document" multiple class="formInput">
-    <button class="buttonForm">Subir Documentos</button>
-</form>
+<div id="mainContainer">
+    <form id="uploadForm" data-user-id="{{user._id}}" class="formContainer">
+        <h2 class="formTitle">Cambia a usuario Premium</h2>
+        <p>Carga 3 archivos: Identificacion, Estado de cuenta y Comprobante de Domicilio </p>
+        <p class="cardDescription">Los nombres de los archivos deben ser: Identificacion, Estado y Domicilio</p>
+        <input type="file" id="documentInput" name="document" multiple class="formInput">
+        <button class="buttonForm">Subir Documentos</button>
+    </form>
+</div>
 <script src="/js/uploadDocuments.js"></script>
