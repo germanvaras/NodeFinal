@@ -1,39 +1,35 @@
-<main class="formContainerCheckout">
-    <table class="product-table">
-        <tr>
-            <th><p>Producto</p></th>
-            <th><p>Precio</p></th>
-            <th><p>Stock</p></th>
-            <th><p>Cantidad</p></th>
-            <th><p>Subtotal</p></th>
-        </tr>
-        {{#each products}}
-            <tr>
-                <td><p>{{this.product.title}}</p></td>
-                <td><p>{{this.product.price}}</p></td>
-                <td><p>{{this.product.stock}}</p></td>
-                <td><p>{{this.quantity}}</p></td>
-                <td><p>{{multiply this.product.price this.quantity}}</p></td>
-            </tr>
-        {{/each}}
-        {{#each outOfStockProducts}}
-            <tr>
-                <td><p>{{this.product.title}}</p></td>
-                <td><p>{{this.product.price}}</p></td>
-                <td><p>{{this.product.stock}}</p><p class="lowStock">Stock Insuficiente</p></td>
-                <td><p>{{this.quantity}}</p></td>
-                <td><p>{{multiply this.product.price this.quantity}}</p></td>
-            </tr>
-        {{/each}}
-        <tr>
-            <td colspan="3"><p>Total:</p></td>
-            <td><p>{{total}}</p></td>
-        </tr>
-    </table>
-    <div id="card-element" class="formInput"></div>
-    <button class="buttonForm" onclick="purchaseProducts('{{user.cartId}}')">Comprar</button>
-    <a class="linkForm" onclick="goToCart('{{user.cartId}}')">Volver al Cart</a>
-</main>
+<div class="mainContainerCheckout">
+    <main class="formContainerCheckout">
+        <div class="product-table">
+            {{#each products}}
+            <div class="product-table-row">
+                <p><strong>Producto: </strong>{{this.product.title}}</p>
+                <p><strong>Precio: </strong>{{this.product.price}}</p>
+                <p><strong>Stock: </strong>{{this.product.stock}}</p>
+                <p><strong>Cantidad: </strong>{{this.quantity}}</p>
+                <p><strong>Subtotal: </strong>${{multiply this.product.price this.quantity}}</p>
+            </div>
+            {{/each}}
+            {{#each outOfStockProducts}}
+            <div class="product-table-row low-stock">
+                <p><strong>Producto: </strong>{{this.product.title}}</p>
+                <p><strong>Precio: </strong>{{this.product.price}}</p>
+                <p><strong>Stock: </strong>{{this.product.stock}}<span class="lowStock">Stock Insuficiente</span></p>
+                <p><strong>Cantidad: </strong>{{this.quantity}}</p>
+                <p><strong>Subtotal: </strong>${{multiply this.product.price this.quantity}}</p>
+            </div>
+            {{/each}}
+            <div class="product-table-row total-row">
+                <p><strong>Total:</strong> ${{total}}</p>
+            </div>
+        </div>
+        <div id="card-element" class="formInput"></div>
+        <button class="buttonForm buttonCheckout" onclick="purchaseProducts('{{user.cartId}}')">Comprar</button>
+        <a class="linkForm" onclick="goToCart('{{user.cartId}}')">Volver al Cart</a>
+    </main>
+</div>
+
+
 
 <script src="https://js.stripe.com/v3/"></script>
 <script src="/js/purchase.js"></script>

@@ -1,70 +1,47 @@
 <div class="productsContainer">
     <h1>Cart</h1>
     {{#if productsInCart}}
-    <div class="productsInCart">
-        <table>
+    <div class="">
+        <section class="productsInCart">
             {{#each productsInCart}}
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>
-                        <p>Producto</p>
-                    </th>
-                    <th>
-                        <p>Cantidad</p>
-                    </th>
-                    <th>
-                        <p>Precio</p>
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="product{{this._id}}">
-                    <td>
-                        <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.product.title}}">
-                    </td>
-                    <td>
-                        <p>{{this.title}}</p>
-                    </td>
-                    <td>
-                        <div class="containerQuantity">
-                            <button onclick="minusQuantity('{{this._id}}')" class="cardButton">
-                                -
-                            </button>
-                            <p class="quantity">{{this.quantity}}</p>
-                            <button onclick="plusQuantity('{{this._id}}')" class="cardButton">
-                                +
-                            </button>
-                        </div>
-                    </td>
-                    <td>
-                        <p>${{this.price}}</p>
-                    </td>
-                    <td><button class="cardButton "
-                            onclick="deleteProductInCart('{{this._id}}')">Eliminar</button></td>
-                </tr>
-            </tbody>
+            <div class="productGrid product{{this._id}}">
+                <figure>
+                    <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.title}}">
+                </figure>
+                <p>{{this.title}}</p>
+                <div class="containerQuantity">
+                    <button onclick="minusQuantity('{{this._id}}')" class="cardButton">-</button>
+                    <p class="quantity">{{this.quantity}}</p>
+                    <button onclick="plusQuantity('{{this._id}}')" class="cardButton">+</button>
+                </div>
+                <p>${{this.price}}</p>
+                <div>
+                    <button class="cardButton" onclick="deleteProductInCart('{{this._id}}')">Eliminar</button>
+                </div>
+            </div>
             {{/each}}
-        </table>
-        <div class="buttonCartContainer">
-            <button class="buttonBlack" onclick="redirectToCheckout('{{cartId}}')">Finalizar Compra</button>
-        </div>
-        <div class="buttonCartContainer">
-            <button class="buttonFilters removeFilters" onclick="deleteProductsInCart()">Vaciar Carrito</button>
-        </div>
-        <div class="buttonCartContainer">
-            <button class="buttonFilters" onclick="backHome()">Volver a Home</a></button>
-        </div>
+        </section>
     </div>
-    {{else}}
-    <div class="emptyCartContainer">
-        <h3 class="emptyTitle">No hay productos en el carrito :(</h3>
+    <section class="buttonsContainer">
         <div class="buttonCartContainer">
-            <button class="buttonBlack" onclick="backHome()">Volver a Home</a></button>
+            <button class="buttonBlack buttonCart" onclick="redirectToCheckout('{{cartId}}')">Finalizar Compra</button>
         </div>
+        <div class="buttonCartContainer">
+            <button class="buttonFilters removeFilters buttonCart" onclick="deleteProductsInCart()">Vaciar Carrito</button>
+        </div>
+        <div class="buttonCartContainer">
+            <button class="buttonFilters buttonCart" onclick="backHome()">Volver a Home</a></button>
+        </div>
+    </section>
+</div>
+{{else}}
+<div class="emptyCartContainer">
+    <h3 class="emptyTitle">No hay productos en el carrito :(</h3>
+    <div class="buttonCartContainer">
+        <button class="buttonBlack" onclick="backHome()">Volver a Home</a></button>
     </div>
+</div>
 
-    {{/if}}
+{{/if}}
 </div>
 <script src="/js/cart.js"></script>

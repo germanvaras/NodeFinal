@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,62 +10,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/{{style}}">
 </head>
+
 <body>
     {{#if user}}
-    <nav class="nav">
-        <ul class="navListContainer">
-            <div class="listMenu">
-                <a class="linkForm" onclick="backHome()">
-                    <li>Home</li>
-                </a>
-                {{#if (eq user.rol 'admin')}}
-                <a class="linkForm" href="/api/user/getAll">
-                    <li>Control de Usuarios</li>
-                </a>
-                <a class="linkForm" href="/api/products/form">
-                    <li>Control de Productos</li>
-                </a>
-                {{else}}
-                {{#if (eq user.rol 'premium')}}
-                <a class="linkForm" href="/api/products/form">
-                    <li>Control de Productos</li>
-                </a>
-                {{/if}}
-                <a class="linkForm" onclick="changeRol('{{user._id}}')">
-                    <li>Cambiar Rol</li>
-                </a>
-                <a class="linkForm" href="/api/user/documents">
-                    <li>Documentación</li>
-                </a>
-                {{/if}}
-            </div>
-            <div class="listCartLogout">
+    <nav class="nav" id="nav">
+        <button class="hamburger" id="hamburger">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+        <ul class="navListContainer" id="navListContainer">
+            <li>
+                <a class="linkForm" onclick="backHome()">Home</a>
+            </li>
+            {{#if (eq user.rol 'admin')}}
+            <li>
+                <a class="linkForm" href="/api/user/getAll">Control de Usuarios</a>
+            </li>
+            <li>
+                <a class="linkForm" href="/api/products/form">Control de Productos</a>
+            </li>
+            {{else}}
+            {{#if (eq user.rol 'premium')}}
+            <li>
+                <a class="linkForm" href="/api/products/form">Control de Productos</a>
+            </li>
+            {{/if}}
+            <li>
+                <a class="linkForm" onclick="changeRol('{{user._id}}')">Cambiar Rol</a>
+            </li>
+            <li>
+                <a class="linkForm" href="/api/user/documents">Documentación</a>
+            </li>
+            {{/if}}
+        </ul>
+        <div class="cartLogout">
+            <ul class="listCartLogout">
                 <li>
                     <a href="{{url}}" id="cartLink">
-                        <svg class="iconCart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                            <path fill="#efa51e"
-                                d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
-                        </svg>
+                        <i class="fas fa-shopping-cart fa-lg"></i>
                         <span class="linkForm" id="cartQuantity"></span>
                     </a>
                 </li>
                 <li>
-                    <a class="linkForm" href="/api/user/logout">
-                        Logout
-                    </a>
+                    <a class="linkForm" href="/api/user/logout">Logout</a>
                 </li>
-            </div>
-        </ul>
+            </ul>
+        </div>
     </nav>
-    <button class="floating-button" onclick="goChat()">Chat</button>
+    <div class="dropdownMenu" id="dropdownMenu">
+    </div>
+
+    <button class="floating-button" onclick="goChat()"><i class="fa-sharp fa-regular fa-comments fa-lg"></i></button>
     {{{body}}}
     <script src="/js/getCartLinkQuantity.js"></script>
     <script src="/js/utils.js"></script>
-{{else}}
+    {{else}}
     {{{body}}}
     <script src="/js/utils.js"></script>
-{{/if}}
+    {{/if}}
 </body>
+<script src="https://kit.fontawesome.com/e8f62e9a4c.js" crossorigin="anonymous"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </html>
