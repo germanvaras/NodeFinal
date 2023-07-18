@@ -1,6 +1,6 @@
 const User = require("../model/user")
 const UserDTO = require("../DTOs/user");
-const { NotFoundError } = require("../../middlewares/errorHandler");
+const { NotFoundUserError } = require("../../middlewares/errorHandler");
 const createUserDtoFromObject = (obj) => {
     if (!obj) {
         return null
@@ -54,7 +54,7 @@ class UserDAO {
                 { new: true }
             );
             if (!updatedUser) {
-                throw new NotFoundError('Usuario Inexistente');
+                throw new NotFoundUserError('Usuario Inexistente');
             }
             return updatedUser;
         } catch (error) {
@@ -117,7 +117,7 @@ class UserDAO {
                 await user.save();
                 return { user: createUserDtoFromObject(user), duplicateDocuments };
             } else {
-                throw new NotFoundError('Usuario Inexistente');
+                throw new NotFoundUserError('Usuario Inexistente');
             }
         } catch (error) {
             return { error: error.message };

@@ -1,5 +1,9 @@
 <div class="notFoundContainer">
     <h1>Eror: 404</h1>
-    <p class="p404">{{this.user.name}} la siguiente página:{{this.url}} no existe</p class="p404">
+    {{#if (eq this.payload 'productNotFound')}}
+    <p class="p404">{{this.user.name}} el siguiente producto: {{this.url}} no existe</p class="p404">
+    {{else}}
+    <p class="p404">{{this.user.name}} la siguiente página: {{this.url}} no existe</p class="p404">
+    {{/if}}
     <button class="buttonBlack" onclick="backHome()">Volver al Home</button>
 </div>

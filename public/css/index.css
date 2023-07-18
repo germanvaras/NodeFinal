@@ -643,7 +643,8 @@ i.fas.fa-eye-slash {
     align-items: center;
 }
 .p404{
-    color: var(--black)
+    color: var(--black);
+    text-align: center;
 }
 @media (max-width: 920px) {
     h1 {

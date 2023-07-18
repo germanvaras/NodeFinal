@@ -27,7 +27,7 @@ const {
 } = require("../utils/generateToken");
 const { sendEmailResetPassword } = require("../config/nodemailer");
 const path = require('path');
-const { NotFoundError, CredentialError } = require("../middlewares/errorHandler");
+const { NotFoundUserError, CredentialError } = require("../middlewares/errorHandler");
 
 const loginUserForm = (req, res) => {
     res.render("login", { title: "Login", style: "index.css" });
@@ -187,7 +187,7 @@ const deleteUser = async (req, res, next) => {
         const user = await getUserById(req.params.uid)
         const deleteUser = await deleteUserService(req.params.uid)
         if (deleteUser.error) {
-            throw new NotFoundError("Usuario Inexistente")
+            throw new NotFoundUserError("Usuario Inexistente")
         }
         else {
             res.send({ status: "success", payload: `${user.username} ha sido eliminado`, data: deleteUser })

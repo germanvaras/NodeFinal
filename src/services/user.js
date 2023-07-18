@@ -2,7 +2,7 @@ const UserRepository = require('../db/repositories/user')
 const userRepository = new UserRepository()
 const { serviceAddCart } = require("./cart")
 const { sendEmailUserDeleted } = require('../config/nodemailer')
-const { UnauthorizedError, NotFoundError, DuplicatedDocumentError, InvalidDocumentNameError, MissingDocumentError, InvalidAdminRoleError } = require('../middlewares/errorHandler')
+const { UnauthorizedError, NotFoundUserError, DuplicatedDocumentError, InvalidDocumentNameError, MissingDocumentError, InvalidAdminRoleError } = require('../middlewares/errorHandler')
 const getAllUserService = async (user) => {
     const foundUser = await getUserById(user._id)
     if (foundUser.rol === "admin") {
@@ -38,7 +38,7 @@ const loginUserService = async (user) => {
 const existUserService = async (userBody) => {
     const user = await loginUserService(userBody);
     if (!user) {
-        throw new NotFoundError("Usuario Inexistente");
+        throw new NotFoundUserError("Usuario Inexistente");
     }
     else {
         return user

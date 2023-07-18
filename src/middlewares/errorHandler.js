@@ -5,10 +5,17 @@ class ValidationError extends Error {
         this.statusCode = 422;
     }
 }
-class NotFoundError extends Error {
+class NotFoundProductError extends Error {
     constructor(message) {
         super(message);
-        this.name = 'NotFoundError';
+        this.name = 'NotFoundProductError';
+        this.statusCode = 404;
+    }
+}
+class NotFoundUserError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'NotFoundUserError';
         this.statusCode = 404;
     }
 }
@@ -70,7 +77,8 @@ class CredentialError extends Error {
 }
 const errorHandlers = [
     { check: (err) => err instanceof ValidationError, statusCode: 422 },
-    { check: (err) => err instanceof NotFoundError, statusCode: 404 },
+    { check: (err) => err instanceof NotFoundUserError, statusCode: 404 },
+    { check: (err) => err instanceof NotFoundProductError, statusCode: 404 },
     { check: (err) => err instanceof UnauthorizedError, statusCode: 401 },
     { check: (err) => err instanceof DuplicatedDocumentError, statusCode: 400 },
     { check: (err) => err instanceof InvalidDocumentNameError, statusCode: 400 },
@@ -84,11 +92,15 @@ const errorHandler = (err, req, res, next) => {
     for (const { check, statusCode } of errorHandlers) {
         if (check(err)) {
             req.logger.error(err);
-            return res.status(statusCode).send({
-                status: "error",
-                payload: err.message,
-                code: statusCode
-            });
+            if (err instanceof NotFoundProductError) {
+                return res.status(404).render('404', { title: "Página no encontrada", url: req.url, user:req?.session?.user, payload:"productNotFound", style:"index.css"  });
+            } else {
+                return res.status(statusCode).send({
+                    status: "error",
+                    payload: err.message,
+                    code: statusCode
+                });
+            }
         }
     }
     req.logger.error(err);
@@ -98,6 +110,6 @@ const errorHandler = (err, req, res, next) => {
         code: 500
     });
 };
-module.exports = {errorHandler, ValidationError, NotFoundError,UnauthorizedError, DuplicatedDocumentError, 
+module.exports = {errorHandler, ValidationError, NotFoundUserError,NotFoundProductError, UnauthorizedError, DuplicatedDocumentError, 
     InvalidDocumentNameError, MissingDocumentError, BadOwnerError,
     InvalidAdminRoleError,InvalidStockPriceError,CredentialError };

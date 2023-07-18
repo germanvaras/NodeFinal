@@ -1,13 +1,16 @@
 const ProductRepository = require('../db/repositories/product');
-const { InvalidStockPriceError, ValidationError } = require('../middlewares/errorHandler');
+const { InvalidStockPriceError, ValidationError, NotFoundProductError } = require('../middlewares/errorHandler');
 const productRepository = new ProductRepository()
 const serviceGetProducts = async (filters) => {
     let getProducts = await productRepository.getProducts(filters)
     return getProducts;
 }
 const serviceGetProductById = async (id) => {
-    let getById = await productRepository.getById(id)
-    return getById;
+    let product = await productRepository.getById(id)
+    if (product.error) {
+        throw new NotFoundProductError(product.error);
+    }
+    return product;
 }
 const serviceAddProduct = async (product) => {
     validateProductFields(product);
