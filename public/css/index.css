@@ -623,9 +623,9 @@ i.fas.fa-eye-slash {
     padding: 10px 12px;
     color: var(--white);
     background-color: var(--black);
-    border: 1px solid var(--main-color);
+    border: 1px solid var(--white);
     border-radius: 4px;
-    transition: box-shadow 150ms ease;
+    transition: border 150ms ease;
 }
 
 #card-element:hover {
@@ -633,10 +633,18 @@ i.fas.fa-eye-slash {
 }
 
 #card-element.StripeElement--focus {
-    box-shadow: 0 1px 3px 0 var(--main-color);
-    transition: box-shadow 150ms ease;
+    border: 1px solid var(--main-color);
 }
-
+/* 404 */
+.notFoundContainer{
+    display:flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+.p404{
+    color: var(--black)
+}
 @media (max-width: 920px) {
     h1 {
         font-size: 3.5rem;

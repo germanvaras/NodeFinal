@@ -7,7 +7,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
             console.log(data);
             stripe = Stripe(data.publishableKey);
             elements = stripe.elements();
-            card = elements.create('card');
+            card = elements.create('card', {
+                style: {
+                    base: {
+                        color: '#ffffff', 
+                        '::placeholder': {
+                            color: '#ffffff' 
+                        }
+                    }
+                }
+            });
             card.mount('#card-element');
         });
 });
@@ -73,7 +82,8 @@ const confirmPurchase = (cartId) => {
                     background: 'var(--black)',
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        window.location.origin + "/api/products"
+                        console.log(window.location.origin)
+                        window.location.href = window.location.origin + "/api/products"
                     }
                 });
             } else {

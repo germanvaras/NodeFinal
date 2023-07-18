@@ -20,6 +20,7 @@ const specs = swaggerJSDoc(swaggerOption)
 const MONGO_URL = process.env.db
 const secret = process.env.secret
 const routes = require("./routes/index");
+const handle404 = require("./middlewares/handle404");
 app.use(
   session({
     store: MongoStore.create({
@@ -67,7 +68,7 @@ app.get("/mockingproducts", (req, res) => {
   res.send({ status: "success", payload: getMockProducts() });
 });
 app.use(errorHandler);
-
+app.use(handle404)
 scheduleDeleteInactiveUsers();
 scheduleDeleteExpiredTokens(); 
 module.exports = app;
