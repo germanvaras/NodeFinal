@@ -607,6 +607,7 @@ i.fas.fa-eye-slash {
     border: 1px solid #ccc;
     margin-bottom: 1rem;
     padding: 1rem;
+    gap: .5rem
 }
 
 .lowStock {
