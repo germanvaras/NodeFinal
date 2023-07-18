@@ -121,9 +121,13 @@ const deleteUserIfInactiveService = async () => {
         }
     }
 }
+const passwordValidator = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    return passwordRegex.test(password);
+};
 module.exports = {
     getAllUserService, createUserService, loginUserService, getUserByEmail, getUserByUsername,
     updatePasswordService, existUserService, updateRolService, getUserById,
     deleteUserService, updatedUserConectionService, updateDocumentsStatusService,
-    generateDocumentURL, deleteUserIfInactiveService
+    generateDocumentURL, deleteUserIfInactiveService, passwordValidator
 }

@@ -1,23 +1,8 @@
 const form = document.getElementById("formLogin");
-const passwordInput = document.getElementById('userPassword');
-const togglePasswordButton = document.getElementById('togglePasswordButton');
-const eyeIcon = togglePasswordButton.querySelector('i');
-togglePasswordButton.onclick = ()  => {
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        eyeIcon.classList.remove('fa-eye');
-        eyeIcon.classList.add('fa-eye-slash');
-    } else {
-        passwordInput.type = 'password';
-        eyeIcon.classList.remove('fa-eye-slash');
-        eyeIcon.classList.add('fa-eye');
-    }
-};
 form.addEventListener("submit", (event) => {
     event.preventDefault();
     submitForm();
 });
-
 const submitForm = async () => {
     const user = document.getElementById("userEmail").value;
     const login = user.includes("@") ? { email: user } : { username: user }
@@ -29,7 +14,6 @@ const submitForm = async () => {
         headers: {
             "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
             ...login,
             password: password,

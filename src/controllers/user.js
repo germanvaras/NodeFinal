@@ -9,7 +9,8 @@ const {
     deleteUserService,
     updatedUserConectionService,
     updateDocumentsStatusService,
-    generateDocumentURL
+    generateDocumentURL,
+    passwordValidator
 } = require("../services/user");
 const {
     findTokenByUserIdService,
@@ -83,51 +84,59 @@ const formResetPassword = async (req, res) => {
 }
 const resetPassword = async (req, res, next) => {
     try {
-        const user = await existUserService(req.body)
-        const password = req.body.password
-        const newPassword = req.body.repeatPassword
+        const user = await existUserService(req.body);
+        const password = req.body.password;
+        const newPassword = req.body.repeatPassword;
         const tokenReset = await findTokenByUserIdService(user._id);
-        const validToken = tokenReset.error ? null : isValidToken(tokenReset, req.body.token)
+        const validToken = tokenReset.error ? null : isValidToken(tokenReset, req.body.token);
         if (!validToken) {
-            res.status(403).send({ status: "error", payload: "Token Invalido" })
+            return res.status(403).send({ status: "error", payload: "Token Invalido" });
         }
-        else {
-            const validPassword = isValidPassword(user, password);
-            if (validPassword) {
-                res.status(422).send({ status: "error", payload: "La contraseña no puede ser igual a la anterior" })
-            }
-            else if (password !== newPassword) {
-                res.status(422).send({ status: "error", payload: "Las contraseñas no coinciden" })
-            }
-            else {
-                await updatePasswordService(user._id, createHash(password))
-                deleteTokenByIdService(tokenReset._id)
-                res.status(200).send({ status: "success", payload: "Contraseña actualizada correctamente" })
-            }
+        if (!passwordValidator(newPassword)) {
+            return res.status(400).send({
+                status: "error",
+                payload: "La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y tener al menos 8 caracteres."
+            });
         }
+        const validPassword = isValidPassword(user, password);
+        if (validPassword) {
+            return res.status(422).send({ status: "error", payload: "La contraseña no puede ser igual a la anterior" });
+        }
+        if (password !== newPassword) {
+            return res.status(422).send({ status: "error", payload: "Las contraseñas no coinciden" });
+        }
+        await updatePasswordService(user._id, createHash(password));
+        deleteTokenByIdService(tokenReset._id);
+        res.status(200).send({ status: "success", payload: "Contraseña actualizada correctamente" });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
+
 const formRegisterUser = (req, res) => {
     res.render("register", { title: "Register", style: "index.css" });
 };
 const createUser = async (req, res) => {
     try {
         let existEmailOrUser = await loginUserService(req.body)
-        if (!existEmailOrUser) {
-            const newUser = await createUserService(req.body);
-            req.logger.info(newUser.username)
-            res.status(201).send({ status: "success", payload: "Usuario creado correctamente", data: newUser });
+        if (existEmailOrUser && existEmailOrUser.username === req.body.username) {
+            return res.status(403).send({ status: "error", payload: "Usuario Ocupado" });
         }
-        else if (existEmailOrUser.username === req.body.username) {
-            res.status(403).send({ status: "error", payload: "Usuario Ocupado" })
+        if (existEmailOrUser) {
+            return res.status(403).send({ status: "error", payload: "Email Ocupado" });
         }
-        else {
-            res.status(403).send({ status: "error", payload: "Email Ocupado" })
+        const { password } = req.body;
+        if (!passwordValidator(password)) {
+            return res.status(400).send({
+                status: "error",
+                payload: "La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y tener al menos 8 caracteres."
+            });
         }
+        const newUser = await createUserService(req.body);
+        req.logger.info(newUser.username)
+        return res.status(201).send({ status: "success", payload: "Usuario creado correctamente", data: newUser });
     } catch (error) {
-        res.status(500).send({ status: "error", payload: error.message });
+        return res.status(500).send({ status: "error", payload: error.message });
     }
 };
 const uploadDocuments = async (req, res, next) => {
