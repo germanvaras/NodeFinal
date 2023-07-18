@@ -2,3 +2,5 @@
 plantilla.js
 .env
 /practicas
+/src/uploads/documents/*
+touch /src/uploads/documents/.gitkeep
