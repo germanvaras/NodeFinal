@@ -67,6 +67,21 @@ class CartDao {
             return { error: err.message }
         }
     }
+    async deleteCartById(id) {
+        try {
+            const deleteCart = await Cart.deleteOne({ _id: id })
+            if (deleteCart.deletedCount === 0) {
+                return { error: `No existe producto con id:${id}` }
+            }
+            return deleteCart
+        }
+        catch (err) {
+            if (err.name === 'CastError') {
+                return { error: `Id inválido: ${id}` }
+            }
+            return { error: err.message }
+        }
+    }
     async deleteProductsInCart(id) {
         try {
             const cart = await Cart.findOne({ _id: id })

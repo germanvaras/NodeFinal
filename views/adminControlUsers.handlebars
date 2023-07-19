@@ -1,45 +1,22 @@
-<section class="sectionUsersAdmin">
-    <h2>Lista de Usuarios</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    <p>Usuario</p>
-                </th>
-                <th>
-                    <p>
-                        Email
-                    </p>
-                </th>
-                <th>
-                    <p>Rol</p>
-                </th>
-                <th>
-                </th>
-                <th>
-                </th>
-            </tr>
-        </thead>
-        {{#each users}}
-        <tbody>
-            <tr class="user{{this._id}}">
-                <td>
-                    <p>{{this.username}}</p>
-                </td>
-                <td>
-                    <p>{{this.email}}</p>
-                </td>
-                <td>
-                    <p>{{this.rol}}</p>
-                </td>
-                <td><button class="cardButton " onclick="deleteUser('{{this._id}}')">Eliminar</button>
-                </td>
-                <td><button class="cardButton " onclick="changeRolUser('{{this._id}}')">Cambiar Rol
+<div class="mainUserControlContainer">
+    <h1>Control de Usuarios</h1>
+    <main class="formContainerUserControl">
+        <div class="user-table">
+            {{#each users}}
+            <div class="user-table-row">
+                <p><strong>Username: </strong>{{this.username}}</p>
+                <p><strong>Email: </strong>{{this.email}}</p>
+                <p><strong>Rol: </strong>{{this.rol}}</p>
+                <div class="userControlSectionButtons">
+                    <button class="cardButton buttonCheckout buttonTrash userControlButton" onclick="deleteUser('{{this._id}}')">
+                        <i class="fa-solid fa-trash fa-lg"></i>
                     </button>
-                </td>
-            </tr>
-        </tbody>
-        {{/each}}
-    </table>
-</section>
+                    <button class="cardButton buttonCheckout" onclick="changeRolUser('{{this._id}}')">Cambiar Rol
+                    </button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </main>
+</div>
 <script src="/js/adminUsersControl.js"></script>

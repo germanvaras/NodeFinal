@@ -1,33 +1,32 @@
 <div class="productsContainer">
     <h1>Cart</h1>
     {{#if productsInCart}}
-    <div class="">
-        <section class="productsInCart">
-            {{#each productsInCart}}
-            <div class="productGrid product{{this._id}}">
-                <figure>
-                    <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.title}}">
-                </figure>
-                <p>{{this.title}}</p>
-                <div class="containerQuantity">
-                    <button onclick="minusQuantity('{{this._id}}')" class="cardButton">-</button>
-                    <p class="quantity">{{this.quantity}}</p>
-                    <button onclick="plusQuantity('{{this._id}}')" class="cardButton">+</button>
-                </div>
-                <p>${{this.price}}</p>
-                <div>
-                    <button class="cardButton" onclick="deleteProductInCart('{{this._id}}')">Eliminar</button>
-                </div>
+    <section class="productsInCart">
+        {{#each productsInCart}}
+        <div class="productGrid product{{this._id}}">
+            <figure>
+                <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.title}}">
+            </figure>
+            <p>{{this.title}}</p>
+            <div class="containerQuantity">
+                <button onclick="minusQuantity('{{this._id}}')" class="cardButton">-</button>
+                <p class="quantity">{{this.quantity}}</p>
+                <button onclick="plusQuantity('{{this._id}}')" class="cardButton">+</button>
             </div>
-            {{/each}}
-        </section>
-    </div>
+            <p>${{this.price}}</p>
+            <div>
+                <button class="cardButton buttonTrash" onclick="deleteProductInCart('{{this._id}}')"><i class="fa-solid fa-trash fa-lg"></i></button>
+            </div>
+        </div>
+        {{/each}}
+    </section>
     <section class="buttonsContainer">
         <div class="buttonCartContainer">
             <button class="buttonBlack buttonCart" onclick="redirectToCheckout('{{cartId}}')">Finalizar Compra</button>
         </div>
         <div class="buttonCartContainer">
-            <button class="buttonFilters removeFilters buttonCart" onclick="deleteProductsInCart()">Vaciar Carrito</button>
+            <button class="buttonFilters removeFilters buttonCart" onclick="deleteProductsInCart()">Vaciar
+                Carrito</button>
         </div>
         <div class="buttonCartContainer">
             <button class="buttonFilters buttonCart" onclick="backHome()">Volver a Home</a></button>

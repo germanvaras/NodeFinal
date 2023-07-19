@@ -2,7 +2,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-
 }
 
 html {
@@ -65,7 +64,7 @@ h2#swal2-title {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     text-align: center;
 }
 
@@ -288,8 +287,13 @@ button.swal2-cancel.swal2-styled:hover {
 }
 
 /* realTimeProducts */
+section#realTimeContainer {
+    padding: 2rem;
+}
+
 .formContainer,
-.formContainerCheckout {
+.formContainerCheckout,
+.formContainerUserControl {
     display: flex;
     width: 50%;
     background-color: #1c1c1c;
@@ -297,10 +301,13 @@ button.swal2-cancel.swal2-styled:hover {
     align-items: center;
     gap: 1rem;
     box-shadow: 7px 5px 14px -6px #000000;
-    margin: 2rem auto;
     padding: 2.5rem;
     border-radius: .6rem;
     text-align: center;
+}
+
+.formContainer {
+    margin: 0 auto;
 }
 
 .sectionAdminContainer {
@@ -386,7 +393,7 @@ p {
 }
 
 .sectionDetail {
-    padding: 3rem;
+    padding: 2rem;
 }
 
 .sectionContainer {
@@ -550,7 +557,6 @@ svg {
 }
 
 .emptyCartContainer {
-    height: 80vh;
     gap: 1.5rem;
     display: grid;
     grid-template-rows: 1fr;
@@ -567,6 +573,9 @@ svg {
 }
 
 /* login */
+div#mainContainer{
+    padding: 2rem;
+}
 button#togglePasswordButton {
     background: transparent;
     border: none;
@@ -582,32 +591,36 @@ i.fas.fa-eye-slash {
 }
 
 /* checkout */
-.mainContainerCheckout{
+.mainContainerCheckout {
     padding: 2rem;
 }
-.formContainerCheckout {
+
+.formContainerCheckout,
+.formContainerUserControl {
     display: flex;
     flex-direction: column;
     align-items: start;
-    width: 90%;
+    width: 100%;
 }
 
 .product-table {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;  
+    align-items: flex-start;
     width: 100%;
 }
 
-.product-table-row {
+.product-table-row,
+.user-table-row {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;  
+    align-items: flex-start;
     width: 100%;
     border: 1px solid #ccc;
     margin-bottom: 1rem;
     padding: 1rem;
-    gap: .5rem
+    gap: .5rem;
+    border-radius: .6rem;
 }
 
 .lowStock {
@@ -635,32 +648,82 @@ i.fas.fa-eye-slash {
 #card-element.StripeElement--focus {
     border: 1px solid var(--main-color);
 }
+
 /* 404 */
-.notFoundContainer{
-    display:flex;
+.notFoundContainer {
+    display: flex;
     flex-direction: column;
     gap: 1.5rem;
     align-items: center;
 }
-.p404{
+
+.p404 {
     color: var(--black);
     text-align: center;
 }
+
 /* passwordContainer */
 .password-container {
     position: relative;
     width: 100%;
     display: flex;
-    align-items: center; 
+    align-items: center;
 }
+
 .password-toggle {
     margin-left: -30px;
     cursor: pointer;
 }
 
+/* adminControl */
+.mainUserControlContainer,
+.mainProductControl {
+    padding: 2rem;
+}
+
+.mainProductControl {
+    text-align: center;
+}
+
+.user-table {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.user-table-row {
+    gap: 1.5rem;
+    width: 48%;
+}
+
+.fa-trash {
+    color: var(--white);
+    transition: color .3s ease-out;
+}
+
+.fa-trash:hover {
+    color: #fc3030
+}
+
+.buttonTrash {
+    border: none;
+}
+
+.buttonTrash:hover {
+    border: none;
+}
+
+.userControlButton {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+}
+
 @media (max-width: 920px) {
     h1 {
-        font-size: 3.5rem;
+        font-size: 3.2rem;
     }
 
     h2 {
@@ -684,6 +747,19 @@ i.fas.fa-eye-slash {
         flex-direction: column;
         gap: 2rem;
     }
+
+    .user-table {
+        flex-direction: column;
+    }
+
+    .user-table-row {
+        align-items: center;
+        width: 100%;
+    }
+
+    .userControlButton {
+        justify-content: center;
+    }
 }
 
 @media(max-width:768px) {
@@ -706,37 +782,49 @@ i.fas.fa-eye-slash {
         grid-template-columns: 1fr;
         gap: 1.5rem
     }
+
     .detailContainer {
         text-align: center;
         width: 100%;
         align-items: center;
         row-gap: 1.2rem;
     }
+
     .chatForm {
         flex-direction: column;
         align-items: center;
     }
+
     .messageContainer {
         flex-direction: column;
         text-align: center;
     }
+
     .productGrid {
         grid-template-columns: 1fr;
     }
+
     .buttonsContainer {
         flex-direction: column;
     }
+
     .buttonCart {
         text-align: center;
         width: 100%;
     }
-    .product-table, .product-table-row{
+
+    .product-table,
+    .product-table-row {
         align-items: center;
     }
-    .formContainerCheckout{
+
+    .formContainerCheckout {
         align-items: center;
     }
-    .buttonCheckout, #card-element, .product-table-row.total-row{
+
+    .buttonCheckout,
+    #card-element,
+    .product-table-row.total-row {
         width: 100%;
     }
 }

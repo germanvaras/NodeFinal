@@ -12,6 +12,10 @@ const serviceGetProductsInCart = async (id) => {
     let getProducts = await cartRepository.getProductsInCart(id)
     return getProducts;
 }
+const serviceDeleteCartById = async (id) => {
+    let deleteCart = await cartRepository.deleteCart(id)
+    return deleteCart;
+}
 const serviceDeleteProductsInCart = async (id) => {
     let deleteProduct = await cartRepository.deleteProductsInCart(id)
     return deleteProduct;
@@ -30,4 +34,4 @@ const serviceUpdateQuantityProduct = async ( cid, pid, {quantity}) => {
 };
 module.exports = {serviceQuantityInCart, serviceAddCart, serviceGetProductsInCart, 
     serviceDeleteProductsInCart, serviceAddCartProduct, 
-    serviceDeleteCartProduct, serviceUpdateQuantityProduct}
+    serviceDeleteCartProduct, serviceUpdateQuantityProduct, serviceDeleteCartById}

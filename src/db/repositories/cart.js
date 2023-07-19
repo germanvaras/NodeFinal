@@ -14,6 +14,10 @@ class CartRepository {
         let getProducts = await cartDao.getProductsInCart(id)
         return getProducts;
     }
+    deleteCart = async (id) =>{
+        let deleteCart = await cartDao.deleteCartById(id)
+        return deleteCart;
+    }
     deleteProductsInCart = async (id) => {
         let deleteProduct = await cartDao.deleteProductsInCart(id)
         return deleteProduct;

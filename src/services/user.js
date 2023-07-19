@@ -1,6 +1,6 @@
 const UserRepository = require('../db/repositories/user')
 const userRepository = new UserRepository()
-const { serviceAddCart } = require("./cart")
+const { serviceAddCart, serviceDeleteCartById } = require("./cart")
 const { sendEmailUserDeleted } = require('../config/nodemailer')
 const { UnauthorizedError, NotFoundUserError, DuplicatedDocumentError, InvalidDocumentNameError, MissingDocumentError, InvalidAdminRoleError } = require('../middlewares/errorHandler')
 const getAllUserService = async (user) => {
@@ -83,9 +83,19 @@ const updateRolService = async (uid) => {
     }
 }
 const deleteUserService = async (uid) => {
-    const deleteUser = await userRepository.deleteUser(uid)
-    return deleteUser
+    const user = await getUserById(uid);
+    const deleteUserResult = await  userRepository.deleteUser(user._id)
+    if (deleteUserResult.error) {
+        console.log(deleteUserResult)
+        return { status: "error", payload: 'Usuario Inexistente' }
+    }
+    const deleteCartResult = await serviceDeleteCartById(user.cartId);
+    if (deleteCartResult.error) {
+        return { status: "error", payload: 'Error al eliminar el carrito' }
+    }
+    return { status: "success", payload: 'Usuario y carrito eliminados correctamente' }
 }
+
 const updatedUserConectionService = async (uid) => {
     const now = new Date()
     const updateConection = await userRepository.updateLastConnection(uid, now)

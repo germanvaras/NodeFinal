@@ -1,10 +1,11 @@
 <section id="realTimeContainer">
-    <form class="formContainer" id="formProduct">
+    <form class="formContainer formContainerProducts" id="formProduct">
         <h2 class="formTitle">Agregar Producto</h2>
         {{#if (eq user.rol 'admin')}}
         <p class="cardDescription">El campo owner no es necesario completarlo</p>
         {{else}}
-        <p class="cardDescription">El campo owner debe ser completado con tu email, caso contrario será propiedad del administrador.</p>
+        <p class="cardDescription">El campo owner debe ser completado con tu email, caso contrario será propiedad del
+            administrador.</p>
         {{/if}}
         <input type="text" placeholder="Título" name="title" class="formInput" id="title" />
         <input type="text" placeholder="Descripción" name="description" class="formInput" id="description"
@@ -18,32 +19,21 @@
         <button class="buttonForm" type="submit">Agregar</button>
     </form>
 </section>
-<section class="sectionProductsAdmin">
-    <h2>Lista de productos</h2>
-    <table>
+<section class="mainProductControl">
+    <h1>Lista de productos</h1>
+    <div class="productsInCart">
         {{#each products.docs}}
-        <tbody>
-            <tr class="product{{this._id}}">
-                <td>
-                    <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.product.title}}">
-                </td>
-                <td>
-                    <p>{{this.title}}</p>
-                </td>
-                <td>
-                    <p>{{this.description}}</p>
-                </td>
-                <td>
-                    <p>${{this.price}}</p>
-                </td>
-                <td>
-                    <button class="cardButton" onclick="deleteProduct('{{this._id}}')"
-                        class="iconTrash">Eliminar</button>
-                </td>
-            </tr>
-        </tbody>
+        <div class="productGrid product{{this._id}}">
+            <figure>
+                <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.title}}">
+            </figure>
+            <p>{{this.title}}</p>
+            <p>{{this.price}}</p>
+            <p>{{this.category}}</p>
+            <button class="cardButton buttonTrash" onclick="deleteProduct('{{this._id}}')"><i class="fa-solid fa-trash fa-lg"></i></button>
+        </div>
         {{/each}}
-    </table>
+    </div>
     <div class="paginationContainer">
         {{#if hasPrevPage}}
         <button class="buttonBlack" onclick="prevPage('{{page}}')">Página Anterior
