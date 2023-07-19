@@ -568,6 +568,11 @@ svg {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 1rem;
+    align-items: center;
+}
+.homePagination{
+    display: flex;
+    gap: 2rem;
     justify-content: center;
     align-items: center;
 }
