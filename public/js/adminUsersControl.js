@@ -14,6 +14,9 @@ const deleteUser = async (uid) => {
                     window.location.reload();
                 }, 1500);     
             }
+            else{
+                alerts(data.status, data.payload)
+            }
         })
 }
 const changeRolUser = async (uid) => {

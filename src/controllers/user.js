@@ -193,12 +193,11 @@ const logoutUser = (req, res, next) => {
 };
 const deleteUser = async (req, res, next) => {
     try {
-        const user = await getUserById(req.params.uid)
         const deleteResult = await deleteUserService(req.params.uid)
-        if (deleteResult.error) {
-            throw new NotFoundUserError(deleteResult.message)
+        if (deleteResult.status == "error") {
+            throw new NotFoundUserError(deleteResult.payload)
         }
-        res.send({ status: "success", payload: `${user.username} ha sido eliminado`, data: deleteResult })
+        res.send({ status: "success", payload: `${deleteResult.username} ha sido eliminado`, data: deleteResult })
     } catch (error) {
         next(error)
     }

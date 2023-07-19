@@ -84,16 +84,12 @@ const updateRolService = async (uid) => {
 }
 const deleteUserService = async (uid) => {
     const user = await getUserById(uid);
-    const deleteUserResult = await  userRepository.deleteUser(user._id)
-    if (deleteUserResult.error) {
-        console.log(deleteUserResult)
+    if (!user) {
         return { status: "error", payload: 'Usuario Inexistente' }
     }
-    const deleteCartResult = await serviceDeleteCartById(user.cartId);
-    if (deleteCartResult.error) {
-        return { status: "error", payload: 'Error al eliminar el carrito' }
-    }
-    return { status: "success", payload: 'Usuario y carrito eliminados correctamente' }
+    await userRepository.deleteUser(uid)
+    await serviceDeleteCartById(user?.cartId);
+    return user
 }
 
 const updatedUserConectionService = async (uid) => {
@@ -128,6 +124,7 @@ const deleteUserIfInactiveService = async () => {
         if (timeDifference > 2 * 24 * 60 * 60 * 1000) {
             sendEmailUserDeleted(user)
             await userRepository.deleteUser(user._id);
+            await serviceDeleteCartById(user?.cartId);
         }
     }
 }
