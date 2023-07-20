@@ -21,6 +21,7 @@ const MONGO_URL = process.env.db
 const secret = process.env.secret
 const routes = require("./routes/index");
 const handle404 = require("./middlewares/handle404");
+
 app.use(
   session({
     store: MongoStore.create({
@@ -53,7 +54,7 @@ app.use("/apidocs" , swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, "/../public")));
-
+app.use('/products', express.static(path.join(__dirname, './uploads/products')));
 initPassport();
 app.use(passport.initialize());
 app.use(addLogger)
@@ -71,4 +72,5 @@ app.use(errorHandler);
 app.use(handle404)
 scheduleDeleteInactiveUsers();
 scheduleDeleteExpiredTokens(); 
+
 module.exports = app;

@@ -22,15 +22,15 @@ const serviceAddProduct = async (product) => {
 };
 
 const validateProductFields = (product) => {
-    const requiredFields = ['title', 'description', 'category', 'code', 'thumbnail', 'stock', 'price'];
+    const requiredFields = ['title', 'description', 'category', 'code', 'price', 'stock','thumbnail' ];
     const fieldTranslations = {
         'title': 'título',
         'description': 'descripción',
         'category': 'categoría',
         'code': 'código',
-        'thumbnail': 'url imagen',
-        'stock': 'stock',
         'price': 'precio',
+        'stock': 'stock',
+        'thumbnail': 'imagen',
     };
     const missingFields = requiredFields.filter((field) => !product[field]);
     if (missingFields.length > 0) {

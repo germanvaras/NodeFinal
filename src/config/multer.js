@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
             case 'profile':
                 destinationPath = path.join(__dirname, '../uploads/profiles');
                 break;
-            case 'product':
+            case 'thumbnail':
                 destinationPath = path.join(__dirname, '../uploads/products');
                 break;
             case 'document':

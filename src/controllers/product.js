@@ -1,3 +1,4 @@
+const path = require('path');
 const { createBodyProductDeletedByAdmin, createBodyProductDeletedByUser, sendEmailProductDeleted } = require('../config/nodemailer.js');
 const { UnauthorizedError, BadOwnerError } = require('../middlewares/errorHandler.js');
 const {
@@ -62,6 +63,9 @@ const addProduct = async (req, res, next) => {
             throw new BadOwnerError(`${user.username} el campo 'owner' no corresponde a tu email`);
         }
         req.body.owner = owner;
+        if(req.file){
+            req.body.thumbnail = '/products/' + path.basename(req.file.path);
+        }
         const productAdded = await serviceAddProduct(req.body)
         if (!productAdded.error) {
             req.logger.info(`${req.body.title} agregado`)
@@ -70,12 +74,12 @@ const addProduct = async (req, res, next) => {
         else {
             throw new Error(JSON.stringify(productAdded.error))
         }
-
     }
     catch (error) {
         next(error)
     }
 }
+
 const updateProductById = async (req, res, next) => {
     try {
         const id = req.params.pid

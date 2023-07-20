@@ -10,12 +10,16 @@
         <input type="text" placeholder="Título" name="title" class="formInput" id="title" />
         <input type="text" placeholder="Descripción" name="description" class="formInput" id="description"
             maxlength="80" />
-        <input type="text" placeholder="Categoría" name="Category" class="formInput" id="category" maxlength="20" />
+        <input type="text" placeholder="Categoría" name="category" class="formInput" id="category" maxlength="20" />
         <input type="text" placeholder="Código" name="code" class="formInput" id="code" maxlength="8" />
-        <input type="text" placeholder="Url imagen" name="img" class="formInput" id="img" />
         <input type="number" placeholder="Precio" name="price" class="formInput" id="price" />
         <input type="number" placeholder="Stock" name="stock" class="formInput" id="stock" />
         <input type="email" placeholder="Owner" name="owner" class="formInput" id="owner" />
+        <input type="file" id="img" name="thumbnail" accept="image/jpeg, image/png, image/webp" style="display: none;"
+            onchange="showFileName()" />
+        <label class="cardButton buttonFile" for="img" class="custom-file-upload">Cargar Imagen</label>
+        <p class="cardDescription">Formatos Aceptados: .jpg, .png, .wbp</p>
+        <p class="cardDescription" id="fileName">No hay archivo cargado</p>
         <button class="buttonForm" type="submit">Agregar</button>
     </form>
 </section>
@@ -29,7 +33,7 @@
                 <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.title}}">
             </figure>
             <p>{{this.title}}</p>
-            <p>{{this.price}}</p>
+            <p>${{this.price}}</p>
             <p>{{this.category}}</p>
             <button class="cardButton buttonTrash" onclick="deleteProduct('{{this._id}}')"><i
                     class="fa-solid fa-trash fa-lg"></i></button>
@@ -42,21 +46,21 @@
     <h1>No existen productos cargados </h1>
 </section>
 {{/if}}
-    <div class="paginationContainer">
-        {{#if hasPrevPage}}
-        <button class="buttonBlack" onclick="prevPage('{{page}}')">Página Anterior
-        </button>
-        {{else}}
-        <button class="buttonDisabled">Página Anterior</button>
-        {{/if}}
-        <h3>{{page}}</h3>
-        {{#if hasNextPage}}
-        <button class="buttonBlack" onclick="nextPage('{{page}}')">
-            Página Siguiente
-        </button>
-        {{else}}
-        <button class="buttonDisabled">Página Siguiente</button>
-        {{/if}}
-    </div>
+<div class="paginationContainer">
+    {{#if hasPrevPage}}
+    <button class="buttonBlack" onclick="prevPage('{{page}}')">Página Anterior
+    </button>
+    {{else}}
+    <button class="buttonDisabled">Página Anterior</button>
+    {{/if}}
+    <h3>{{page}}</h3>
+    {{#if hasNextPage}}
+    <button class="buttonBlack" onclick="nextPage('{{page}}')">
+        Página Siguiente
+    </button>
+    {{else}}
+    <button class="buttonDisabled">Página Siguiente</button>
+    {{/if}}
+</div>
 <script src="/js/adminProducts.js"></script>
 <script src="/js/filters.js"></script>
