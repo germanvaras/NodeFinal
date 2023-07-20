@@ -11,13 +11,14 @@ const getAllMessages = async (req, res) => {
 };
 const addMessages = async (req, res, next) => {
     try {
-        await require("../socket").addMessages(req.body);
         if (req.body.message === "") {
             throw new ValidationError("Ingrese un mensaje")
         }
-        else {
-            res.status(201).send({ status: "success", payload: "Message Added" });
+        if (req.body.message.length > 100) {
+            throw new ValidationError("El mensaje supera los 100 caracteres")
         }
+        await require("../socket").addMessages(req.body);
+        res.status(201).send({ status: "success", payload: "Message Added" });
     } catch (error) {
         next(error)
     }

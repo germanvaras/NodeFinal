@@ -1,12 +1,17 @@
-<h1>Chat</h1>
-<section id="containerChat" class="containerChat">
-    <div id="messages" >
-    </div>
-    <form id="chatForm" class="chatForm">
-        <input type="text" name="user" id="user" class="formInput" placeholder="{{this.user.username}}" value="{{this.user.username}}" readonly >
-        <input type="text" name="message" id="userMessage"  class="formInput" placeholder="Mensaje">
-        <button type="submit" class="buttonForm">Enviar</button>
-    </form>
-</section>
+<main class="mainChatContainer">
+    <h1>Chat</h1>
+    <section id="containerChat" class="containerChat">
+        <div id="messages">
+        </div>
+        <form id="chatForm" class="chatForm">
+            <input type="text" name="user" id="user" class="formInput" placeholder="{{this.user.username}}"
+                value="{{this.user.username}}" readonly>
+            <textarea name="message" id="userMessage" class="formInput" placeholder="Mensaje" maxlength="100"></textarea>
+            <button type="submit" class="buttonForm buttonChat">Enviar</button>
+            <p class="cardDescription">Caracteres Restantes <span id="restCharacters">100</span></p>
+            <p class="cardDescription">Máximo 100 caracteres</p>
+        </form>
+    </section>
+</main>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/chat.js"></script>
