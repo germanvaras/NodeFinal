@@ -55,22 +55,22 @@ const getProductById = async (req, res, next) => {
 const addProduct = async (req, res, next) => {
     try {
         let user = await getUserByEmail(req.session?.user?.email);
-        let owner = req.body.owner
-        if (!owner) {
+        let owner = req.body.owner;
+        if (!owner || owner.trim() === '') {
             owner = "admin";
         } else if (owner !== user.email) {
             throw new BadOwnerError(`${user.username} el campo 'owner' no corresponde a tu email`);
         }
-        if (user.rol === "premium" || user.rol === "admin") {
-            const productAdded = await serviceAddProduct(req.body)
-            if (!productAdded.error) {
-                req.logger.info(`${req.body.title} agregado`)
-                res.status(201).send({ status: "success", data: productAdded, payload: `Producto: ${req.body.title} agregado ` })
-            }
-            else {
-                throw new Error(JSON.stringify(productAdded.error))
-            }
+        req.body.owner = owner;
+        const productAdded = await serviceAddProduct(req.body)
+        if (!productAdded.error) {
+            req.logger.info(`${req.body.title} agregado`)
+            res.status(201).send({ status: "success", data: productAdded, payload: `Producto: ${req.body.title} agregado ` })
         }
+        else {
+            throw new Error(JSON.stringify(productAdded.error))
+        }
+
     }
     catch (error) {
         next(error)

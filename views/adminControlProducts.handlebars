@@ -19,6 +19,7 @@
         <button class="buttonForm" type="submit">Agregar</button>
     </form>
 </section>
+{{#if products.docs}}
 <section class="mainProductControl">
     <h1>Lista de productos</h1>
     <div class="productsInCart">
@@ -35,6 +36,12 @@
         </div>
         {{/each}}
     </div>
+</section>
+{{else}}
+<section class="mainProductControlEmpty">
+    <h1>No existen productos cargados </h1>
+</section>
+{{/if}}
     <div class="paginationContainer">
         {{#if hasPrevPage}}
         <button class="buttonBlack" onclick="prevPage('{{page}}')">Página Anterior
@@ -51,6 +58,5 @@
         <button class="buttonDisabled">Página Siguiente</button>
         {{/if}}
     </div>
-</section>
 <script src="/js/adminProducts.js"></script>
 <script src="/js/filters.js"></script>

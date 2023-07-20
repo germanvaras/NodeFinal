@@ -563,18 +563,12 @@ svg {
     align-content: center;
     justify-items: center;
 }
-
-.paginationContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 1rem;
-    align-items: center;
-}
-.homePagination{
+.homePagination, .paginationContainer{
     display: flex;
     gap: 2rem;
     justify-content: center;
     align-items: center;
+    margin-bottom: 2rem;
 }
 
 /* login */
@@ -725,7 +719,11 @@ i.fas.fa-eye-slash {
     justify-content: flex-start;
     margin-bottom: 1rem;
 }
-
+.mainEptyUsers, .mainProductControlEmpty{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
 @media (max-width: 920px) {
     h1 {
         font-size: 3.2rem;

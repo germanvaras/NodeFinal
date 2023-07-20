@@ -1,3 +1,4 @@
+{{#if users}}
 <div class="mainUserControlContainer">
     <h1>Control de Usuarios</h1>
     <main class="formContainerUserControl">
@@ -19,4 +20,9 @@
         </div>
     </main>
 </div>
+{{else}}
+<div class="mainEptyUsers">
+    <h1>No existen usuarios registrados</h1>
+</div>
+{{/if}}
 <script src="/js/adminUsersControl.js"></script>
