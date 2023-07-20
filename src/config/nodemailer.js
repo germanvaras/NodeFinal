@@ -154,7 +154,7 @@ const sendEmailProductDeleted = async (user, emailBody) => {
     try {
         let result = await transportGmail.sendMail({
             from: "Sublime <tiendasublime@gmail.com> ",
-            to: user.email,
+            to: user,
             subject: `Tu producto ha sido eliminado`,
             html: emailBody,
             attachments: [],

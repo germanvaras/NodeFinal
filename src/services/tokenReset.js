@@ -43,7 +43,6 @@ const deleteExpiredTokensService = async () => {
     const now = new Date();
     for (let tokenData of tokens) {
         if (new Date(tokenData.expiresAt) < now) {
-            console.log(tokenData)
             await deleteTokenByIdService(tokenData._id);
         }
     }

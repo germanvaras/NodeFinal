@@ -39,12 +39,12 @@ const addProductInCart = async (req, res, next) => {
         let user = await getUserByEmail(req.session?.user?.email);
         const product = await serviceGetProductById(req.params.pid)
         const owner = user.email === product.owner
-        if(owner || user.rol === "user"){
+        if(!owner || user.rol === "user"){
                 const addProduct = await serviceAddCartProduct(req.params.cid, req.params.pid)
                 res.send({status:"success", payload:`Producto agregado al carrito`, addProduct})
         }
         else{
-            throw new UnauthorizedError("No posee la autorización para realizar esta acción");
+            throw new UnauthorizedError(`${user.username} no puedes agregar el producto: ${product.title} ya que te pertenece`);
         }
     }catch(error){
         next(error)

@@ -64,7 +64,7 @@ const addProduct = async (req, res, next) => {
         if (user.rol === "premium" || user.rol === "admin") {
             const productAdded = await serviceAddProduct(req.body)
             if (!productAdded.error) {
-                req.logger.info(`${req.body.name} agregado`)
+                req.logger.info(`${req.body.title} agregado`)
                 res.status(201).send({ status: "success", data: productAdded, payload: `Producto: ${req.body.title} agregado ` })
             }
             else {
@@ -100,12 +100,12 @@ const deleteById = async (req, res, next) => {
         let emailBody;
         if (user.rol === "admin") {
             if (product.owner !== "admin") {
-                emailBody = createBodyProductDeletedByAdmin(product.owner, product);
+                let productOwner = await getUserByEmail(product.owner)
+                emailBody = createBodyProductDeletedByAdmin(productOwner, product);
                 await sendEmailProductDeleted(product.owner, emailBody);
             }
         } else if (user.email === product.owner) {
-            let productOwner = user;
-            emailBody = createBodyProductDeletedByUser(productOwner, product);
+            emailBody = createBodyProductDeletedByUser(user, product);
             await sendEmailProductDeleted(product.owner, emailBody);
         } else {
             throw new UnauthorizedError("No posee la autorización para realizar esta acción");

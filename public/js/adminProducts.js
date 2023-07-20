@@ -37,7 +37,6 @@ const submitForm = async () => {
             if (data.status === "error") {
                 let errorMessage;
                 if (Array.isArray(data.payload)) {
-                    console.log("hola")
                     errorMessage = `<ul> ${data.payload.map((field) => {
                         return `<li>${field}</li>`;
                     }).join('')} </ul>`;
@@ -54,7 +53,6 @@ const submitForm = async () => {
                     timer: 2000,
                 });
             } else {
-                console.log("hola")
                 alerts(data.status, data.payload)
                 setTimeout(() => {
                     window.location.reload()

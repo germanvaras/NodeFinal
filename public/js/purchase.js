@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     fetch('/stripe-key')
         .then((result) => result.json())
         .then((data) => {
-            console.log(data);
             stripe = Stripe(data.publishableKey);
             elements = stripe.elements();
             card = elements.create('card', {
@@ -72,7 +71,6 @@ const confirmPurchase = (cartId) => {
     fetch(`${window.location.protocol}//${window.location.host}/api/cart/${cartId}/confirm-purchase`, { method: "POST" })
         .then((res) => res.json())
         .then((res) => {
-            console.log(res)
             if (res.status === "success") {
                 Swal.fire({
                     html: `<p>${res.payload.ticket.purchaser}, el total de tu compra es: $${res.payload.ticket.amount}</p> <p>Código de compra: ${res.payload.ticket.code}</p> `,
@@ -82,7 +80,6 @@ const confirmPurchase = (cartId) => {
                     background: 'var(--black)',
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        console.log(window.location.origin)
                         window.location.href = window.location.origin + "/api/products"
                     }
                 });
