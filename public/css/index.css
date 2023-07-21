@@ -38,11 +38,14 @@ li,
 td,
 th,
 div#swal2-html-container,
-textarea{
+textarea,
+.tippy-box{
     font-family: 'Montserrat', sans-serif;
     font-size: 1.6rem;
 }
-
+.tippy-box{
+    text-align: center;
+}
 .swal2-popup.swal2-modal.swal2-show {
     width: 500px;
 }
@@ -81,7 +84,13 @@ div#swal2-html-container {
 .swal2-popup.swal2-modal.swal2-show {
     padding: 1.5rem
 }
-
+.flex-container{
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
 /* navBar */
 .nav {
     position: relative;
@@ -187,7 +196,6 @@ div#swal2-html-container {
     gap: 1rem;
     align-items: center;
     color: var(--white);
-
 }
 
 .cardImg {

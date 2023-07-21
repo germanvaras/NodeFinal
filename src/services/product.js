@@ -14,15 +14,29 @@ const serviceGetProductById = async (id) => {
 }
 const serviceAddProduct = async (product) => {
     validateProductFields(product);
-    if (product.stock <= 0 || product.price <= 0) {
-        throw new InvalidStockPriceError("Ni stock ni precio no pueden ser igual o menor a 0");
-    }
+    const validations = [
+        { condition: product.title.length > 20, error: "El título puede tener máximo 20 caracteres" },
+        { condition: product.description.length > 40, error: "La descripción puede tener máximo 40 caracteres" },
+        { condition: product.category.length > 10, error: "La categoría puede tener un máximo de 10 caracteres" },
+        { condition: product.code.length > 8, error: "El código puede tener máximo 8 caracteres" },
+        { condition: product.price < 100, error: "El precio no puede ser menor a $100" },
+        { condition: product.price > 100000, error: "El precio no puede ser mayor a $100.000" },
+        { condition: product.stock <= 0, error: "El stock no puede ser igual o menor a 0" },
+        { condition: product.stock > 10000, error: "El stock no puede ser mayor a 10.000" },
+    ];
+
+    validations.forEach(validation => {
+        if (validation.condition) {
+            throw new ValidationError(validation.error);  
+        }
+    });
+
     const addedProduct = await productRepository.addProduct(product);
     return addedProduct;
 };
 
 const validateProductFields = (product) => {
-    const requiredFields = ['title', 'description', 'category', 'code', 'price', 'stock','thumbnail' ];
+    const requiredFields = ['title', 'description', 'category', 'code', 'price', 'stock', 'thumbnail'];
     const fieldTranslations = {
         'title': 'título',
         'description': 'descripción',

@@ -1,66 +1,97 @@
 <section id="realTimeContainer">
     <form class="formContainer formContainerProducts" id="formProduct">
         <h2 class="formTitle">Agregar Producto</h2>
+        <div class="flex-container">
+            <input type="text" placeholder="Título" name="title" class="formInput" id="title" maxlength="20" />
+            <i class="fas fa-question-circle fa-lg" data-tippy-content="El título puede tener máximo 20 caracteres"></i>
+        </div>
+        <div class="flex-container">
+            <input type="text" placeholder="Descripción" name="description" class="formInput" id="description"
+                maxlength="40" />
+            <i class="fas fa-question-circle fa-lg" data-tippy-content="La descripción puede tener máximo 40 caracteres"></i>
+        </div>
+        <div class="flex-container">
+            <input type="text" placeholder="Categoría" name="category" class="formInput" id="category" maxlength="10" />
+            <i class="fas fa-question-circle fa-lg" data-tippy-content="La categoria puede tener un máximo 10 caracteres"></i>
+        </div>
+        <div class="flex-container">
+            <input type="text" placeholder="Código" name="code" class="formInput" id="code" maxlength="8" />
+            <i class="fas fa-question-circle fa-lg" data-tippy-content="El código puede tener máximo 8 caracteres"></i>
+        </div>
+        <div class="flex-container">
+            <input type="number" placeholder="Precio" name="price" class="formInput" id="price" />
+            <i class="fas fa-question-circle fa-lg"
+                data-tippy-content="El precio no puede ser menor a $100 ni mayor a $100.000"></i>
+        </div>
+        <div class="flex-container">
+            <input type="number" placeholder="Stock" name="stock" class="formInput" id="stock" />
+            <i class="fas fa-question-circle fa-lg"
+                data-tippy-content="El stock no puede ser igual o menor a 0 ni mayor a 10.000"></i>
+        </div>
         {{#if (eq user.rol 'admin')}}
-        <p class="cardDescription">El campo owner no es necesario completarlo</p>
+        <div class="flex-container">
+            <input type="email" placeholder="Owner" name="owner" class="formInput" id="owner" />
+            <i class="fas fa-question-circle fa-lg"
+                data-tippy-content="El campo owner no es necesario completarlo si eres administrador"></i>
+        </div>
         {{else}}
-        <p class="cardDescription">El campo owner debe ser completado con tu email, caso contrario será propiedad del
-            administrador.</p>
+        <div class="flex-container">
+            <input type="email" placeholder="Owner" name="owner" class="formInput" id="owner" />
+            <i class="fas fa-question-circle fa-lg"
+                data-tippy-content="El campo owner debe ser completado con tu email, caso contrario será propiedad del administrador."></i>
+        </div>
         {{/if}}
-        <input type="text" placeholder="Título" name="title" class="formInput" id="title" />
-        <input type="text" placeholder="Descripción" name="description" class="formInput" id="description"
-            maxlength="80" />
-        <input type="text" placeholder="Categoría" name="category" class="formInput" id="category" maxlength="20" />
-        <input type="text" placeholder="Código" name="code" class="formInput" id="code" maxlength="8" />
-        <input type="number" placeholder="Precio" name="price" class="formInput" id="price" />
-        <input type="number" placeholder="Stock" name="stock" class="formInput" id="stock" />
-        <input type="email" placeholder="Owner" name="owner" class="formInput" id="owner" />
-        <input type="file" id="img" name="thumbnail" accept="image/jpeg, image/png, image/webp" style="display: none;"
-            onchange="showFileName()" />
-        <label class="cardButton buttonFile" for="img" class="custom-file-upload">Cargar Imagen</label>
-        <p class="cardDescription">Formatos Aceptados: .jpg, .png, .wbp</p>
+        <div class="flex-container">
+            <input type="file" id="img" name="thumbnail" accept="image/jpeg, image/png, image/webp"
+                style="display: none;" onchange="showFileName()" />
+            <label class="cardButton buttonFile" for="img" class="custom-file-upload">Cargar Imagen</label>
+            <i class="fas fa-question-circle fa-lg" data-tippy-content="Formatos Aceptados: .jpg, .png, .wbp"></i>
+        </div>
+
         <p class="cardDescription" id="fileName">No hay archivo cargado</p>
         <button class="buttonForm" type="submit">Agregar</button>
     </form>
-</section>
-{{#if products.docs}}
-<section class="mainProductControl">
-    <h1>Lista de productos</h1>
-    <div class="productsInCart">
-        {{#each products.docs}}
-        <div class="productGrid product{{this._id}}">
-            <figure>
-                <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.title}}">
-            </figure>
-            <p>{{this.title}}</p>
-            <p>${{this.price}}</p>
-            <p>{{this.category}}</p>
-            <button class="cardButton buttonTrash" onclick="deleteProduct('{{this._id}}')"><i
-                    class="fa-solid fa-trash fa-lg"></i></button>
+
+    {{#if products.docs}}
+    <section class="mainProductControl">
+        <h1>Lista de productos</h1>
+        <div class="productsInCart">
+            {{#each products.docs}}
+            <div class="productGrid product{{this._id}}">
+                <figure>
+                    <img class="cartProductImg" src="{{this.thumbnail}}" alt="{{this.title}}">
+                </figure>
+                <p>{{this.title}}</p>
+                <p>${{this.price}}</p>
+                <p>{{this.category}}</p>
+                <button class="cardButton buttonTrash" onclick="deleteProduct('{{this._id}}')"><i
+                        class="fa-solid fa-trash fa-lg"></i></button>
+            </div>
+            {{/each}}
         </div>
-        {{/each}}
+    </section>
+    {{else}}
+    <section class="mainProductControlEmpty">
+        <h1>No existen productos cargados </h1>
+    </section>
+    {{/if}}
+    <div class="paginationContainer">
+        {{#if hasPrevPage}}
+        <button class="buttonBlack" onclick="prevPage('{{page}}')">Página Anterior
+        </button>
+        {{else}}
+        <button class="buttonDisabled">Página Anterior</button>
+        {{/if}}
+        <h3>{{page}}</h3>
+        {{#if hasNextPage}}
+        <button class="buttonBlack" onclick="nextPage('{{page}}')">
+            Página Siguiente
+        </button>
+        {{else}}
+        <button class="buttonDisabled">Página Siguiente</button>
+        {{/if}}
     </div>
-</section>
-{{else}}
-<section class="mainProductControlEmpty">
-    <h1>No existen productos cargados </h1>
-</section>
-{{/if}}
-<div class="paginationContainer">
-    {{#if hasPrevPage}}
-    <button class="buttonBlack" onclick="prevPage('{{page}}')">Página Anterior
-    </button>
-    {{else}}
-    <button class="buttonDisabled">Página Anterior</button>
-    {{/if}}
-    <h3>{{page}}</h3>
-    {{#if hasNextPage}}
-    <button class="buttonBlack" onclick="nextPage('{{page}}')">
-        Página Siguiente
-    </button>
-    {{else}}
-    <button class="buttonDisabled">Página Siguiente</button>
-    {{/if}}
-</div>
-<script src="/js/adminProducts.js"></script>
-<script src="/js/filters.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="/js/adminProducts.js"></script>
+    <script src="/js/filters.js"></script>

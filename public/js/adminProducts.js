@@ -1,3 +1,4 @@
+tippy('[data-tippy-content]');
 const productsContainer = document.getElementById('products')
 const form = document.getElementById("formProduct");
 const pageLink = document.querySelector('.pageLink');
